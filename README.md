@@ -125,8 +125,4 @@ Der Talk ist größtenteils zusammengelesen und zusammengeschraubt aus Arbeiten 
 **Lars Boes** · Software Engineer & dualer Student · Deutsche Telekom Technik
 [github.com/larsboes](https://github.com/larsboes) · [@larsboes](https://github.com/larsboes)
 
-Wenn ihr eine konkrete Context-Engineering-Frage habt — sprecht mich an oder macht ein Issue in diesem Repo auf.
-
 ---
-
-*Letztes Update: 24. April 2026 · M3 Karlsruhe*
