@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 950">
+  
+
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#12121e"></stop>
+      <stop offset="100%" stop-color="#080812"></stop>
+    </radialGradient>
+  </defs>
+
+  
+  <rect width="1600" height="950" fill="url(#bg)"></rect>
+
+  
+  <text x="800" y="52" text-anchor="middle" fill="#ffffff" font-size="40" font-weight="700">Small mistakes still compound</text>
+  <text x="800" y="86" text-anchor="middle" fill="#555566" font-size="15" letter-spacing="4">EVEN WITH A LOWER BOOBOO RATE PER LINE</text>
+
+  
+  
+
+  
+  <line x1="180" y1="830" x2="1500" y2="830" stroke="#2a2a3a" stroke-width="1"></line>
+  <line x1="180" y1="593" x2="1500" y2="593" stroke="#1a1a28" stroke-width="1"></line>
+  <line x1="180" y1="357" x2="1500" y2="357" stroke="#1a1a28" stroke-width="1"></line>
+  <line x1="180" y1="120" x2="1500" y2="120" stroke="#1a1a28" stroke-width="1"></line>
+
+  
+  <line x1="180" y1="120" x2="180" y2="830" stroke="#2a2a3a" stroke-width="1"></line>
+  <line x1="444" y1="120" x2="444" y2="830" stroke="#1a1a28" stroke-width="1"></line>
+  <line x1="708" y1="120" x2="708" y2="830" stroke="#1a1a28" stroke-width="1"></line>
+  <line x1="972" y1="120" x2="972" y2="830" stroke="#1a1a28" stroke-width="1"></line>
+  <line x1="1236" y1="120" x2="1236" y2="830" stroke="#1a1a28" stroke-width="1"></line>
+  <line x1="1500" y1="120" x2="1500" y2="830" stroke="#1a1a28" stroke-width="1"></line>
+
+  
+  <text x="168" y="835" text-anchor="end" fill="#555566" font-size="16" font-weight="300">0</text>
+  <text x="168" y="598" text-anchor="end" fill="#555566" font-size="16" font-weight="300">1k</text>
+  <text x="168" y="362" text-anchor="end" fill="#555566" font-size="16" font-weight="300">2k</text>
+  <text x="168" y="125" text-anchor="end" fill="#555566" font-size="16" font-weight="300">3k</text>
+
+  
+  <text x="180" y="862" text-anchor="middle" fill="#555566" font-size="16" font-weight="300">0</text>
+  <text x="312" y="862" text-anchor="middle" fill="#555566" font-size="16" font-weight="300">1</text>
+  <text x="444" y="862" text-anchor="middle" fill="#555566" font-size="16" font-weight="300">2</text>
+  <text x="576" y="862" text-anchor="middle" fill="#555566" font-size="16" font-weight="300">3</text>
+  <text x="708" y="862" text-anchor="middle" fill="#555566" font-size="16" font-weight="300">4</text>
+  <text x="840" y="862" text-anchor="middle" fill="#555566" font-size="16" font-weight="300">5</text>
+  <text x="972" y="862" text-anchor="middle" fill="#555566" font-size="16" font-weight="300">6</text>
+  <text x="1104" y="862" text-anchor="middle" fill="#555566" font-size="16" font-weight="300">7</text>
+  <text x="1236" y="862" text-anchor="middle" fill="#555566" font-size="16" font-weight="300">8</text>
+  <text x="1368" y="862" text-anchor="middle" fill="#555566" font-size="16" font-weight="300">9</text>
+  <text x="1500" y="862" text-anchor="middle" fill="#555566" font-size="16" font-weight="300">10</text>
+
+  
+  <text transform="rotate(-90, 52, 475)" x="52" y="475" text-anchor="middle" fill="#555566" font-size="13" letter-spacing="3">CUMULATIVE BOOBOOS</text>
+  <text x="840" y="910" text-anchor="middle" fill="#555566" font-size="14" letter-spacing="3">DAYS</text>
+
+  
+  <line x1="312" y1="735" x2="312" y2="830" stroke="#d45d5d" stroke-width="1" stroke-dasharray="4,4" opacity="0.3"></line>
+
+  
+
+  
+  <polyline points="180,830 312,828.6 444,827.2 576,825.9 708,824.5 840,823.1 972,821.7 1104,820.3 1236,819 1368,817.6 1500,818" fill="none" stroke="#d45d5d" stroke-width="2" opacity="0.5"></polyline>
+
+  
+  <polyline points="180,830 246,829 312,827 378,824 444,820 510,814 576,807 642,798 708,788 774,777 840,765 906,751 972,736 1038,720 1104,702 1170,684 1236,664 1302,642 1368,619 1434,595 1500,570" fill="none" stroke="#d45d5d" stroke-width="2.5" stroke-dasharray="14,10" opacity="0.85"></polyline>
+
+  
+  <polyline points="180,830 193,824 206,817 219,808 233,797 246,784 259,767 272,746 286,720 299,687 312,645 325,593 338,527 352,444 365,340 378,210 391,45" fill="none" stroke="#d45d5d" stroke-width="3"></polyline>
+
+  
+  <line x1="391" y1="120" x2="400" y2="40" stroke="#d45d5d" stroke-width="2" stroke-dasharray="6,5" opacity="0.6"></line>
+
+  
+
+  
+  <text x="310" y="165" fill="#d45d5d" font-size="20" font-weight="700">AGENT SWARM (x10)</text>
+  <text x="340" y="195" fill="#d45d5d" font-size="15" font-weight="300" opacity="0.7">250 booboos/day</text>
+
+  
+  <text x="1280" y="535" fill="#d45d5d" font-size="20" font-weight="700">SINGLE AGENT</text>
+  <text x="1320" y="560" fill="#d45d5d" font-size="15" font-weight="300" opacity="0.7">25 booboos/day</text>
+
+  
+  <text x="1370" y="798" fill="#d45d5d" font-size="20" font-weight="700">HUMAN</text>
+  <text x="1390" y="822" fill="#d45d5d" font-size="15" font-weight="300" opacity="0.7">5 booboos/day</text>
+
+</svg>

@@ -1,0 +1,1888 @@
+<!doctype html>
+<html lang="de" data-accent="magenta" data-bg="grad" data-anim="full">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Context Engineering — Lars Boes · M3 2026</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ============================================================
+           SLIDE 1 — HOOK
+           ============================================================ -->
+      <section id="hook" data-screen-label="01 Hook" class="section-center">
+        <div class="ambient amb-hook" aria-hidden="true">
+          <div class="amb-ring"></div>
+          <div class="amb-ring r2"></div>
+          <div class="amb-dot" style="top:22%; left:18%; --dx: 50px; --dy: 30px; animation-delay: 0ms;"></div>
+          <div class="amb-dot" style="top:74%; left:12%; --dx: -30px; --dy: -45px; animation-delay: 800ms;"></div>
+          <div class="amb-dot" style="top:18%; left:82%; --dx: -60px; --dy: 40px; animation-delay: 1600ms;"></div>
+          <div class="amb-dot" style="top:80%; left:86%; --dx: 20px; --dy: -50px; animation-delay: 2200ms;"></div>
+          <div class="amb-dot" style="top:38%; left:8%;  --dx: 35px; --dy: 60px; animation-delay: 3000ms;"></div>
+          <div class="amb-dot" style="top:62%; left:92%; --dx: -40px; --dy: -20px; animation-delay: 3800ms;"></div>
+          <div class="amb-dot" style="top:12%; left:48%; --dx: 0px; --dy: 40px; animation-delay: 4400ms;"></div>
+          <div class="amb-dot" style="top:88%; left:52%; --dx: 30px; --dy: -55px; animation-delay: 5000ms;"></div>
+        </div>
+        <div class="mono-kicker anim-fade-only" style="--d:0ms">M3 · Context Engineering</div>
+        <h1 class="display anim-fade" style="--d:200ms; font-size: 96px; line-height: 1.1; max-width: 1600px; text-align:center; margin-top: 36px;">
+          Mein Agent war brillant.<br><em>Für genau 20 Minuten.</em>
+        </h1>
+        <aside class="notes">
+          Kennt ihr das? Neue Session. Erste 10 Minuten — der Agent ist schärfer als ihr selbst. Versteht den Code, schlägt die richtige Architektur vor, findet Bugs die ihr übersehen habt.
+          Minute 20 — er wiederholt sich. Minute 30 — confident Unsinn. Minute 40 — ihr fangt von vorne an. [HUMOR #1 — Pause, Publikum lacht weil sie es kennen]
+          Das ist mir über Monate passiert. Und ich hab lange gedacht: das nächste Modell-Update fixt das. Sonnet wird besser, Opus kommt raus. Ich hab zwei Jahre gebraucht um zu verstehen warum das passiert. Und die Antwort ist nicht "besseres Modell."
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SECTION DIVIDER — AKT I
+           ============================================================ -->
+      <section data-screen-label="02 Akt I Divider" class="section-center">
+        <div class="ambient amb-akt1" aria-hidden="true">
+          <svg viewBox="-450 -450 900 900">
+            <rect x="-420" y="-420" width="840" height="840" style="animation-delay: 0ms;"></rect>
+            <rect x="-340" y="-340" width="680" height="680" style="animation-delay: 600ms;"></rect>
+            <rect x="-260" y="-260" width="520" height="520" style="animation-delay: 1200ms;"></rect>
+            <rect x="-180" y="-180" width="360" height="360" style="animation-delay: 1800ms;"></rect>
+            <rect x="-100" y="-100" width="200" height="200" style="animation-delay: 2400ms;"></rect>
+            <rect x="-40"  y="-40"  width="80"  height="80"  style="animation-delay: 3000ms;"></rect>
+          </svg>
+        </div>
+        <div class="divider-label anim-fade-only" style="--d:0ms">Akt I</div>
+        <div class="display display-m anim-fade" style="--d:200ms; text-align:center;">
+          Von <em>mehr</em> zu <em>weniger</em>.
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — DIE REISE
+           ============================================================ -->
+      <section id="timeline" data-screen-label="03 Die Reise">
+        <div class="kicker anim-fade-only" style="--d:0ms">Die Reise</div>
+        <h2 class="anim-fade" style="--d:120ms; margin-top: 8px;">AI-Tooling <em>Evolution</em></h2>
+
+        <div class="grow" style="display:flex; align-items:center; justify-content:center;">
+          <div style="width: 100%; padding: 40px 60px 20px;">
+            <!-- Nodes row -->
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;">
+
+              <!-- 2023 -->
+              <div class="anim-fade" style="--d:500ms; text-align: center;">
+                <div class="mono dim" style="font-size: 26px; letter-spacing: 0.12em; margin-bottom: 20px;">2023</div>
+                <div style="position: relative; height: 18px; display: flex; align-items: center; justify-content: center;">
+                  <div class="anim-fade-only" style="--d:300ms; position: absolute; left: 50%; right: -40px; top: 50%; height: 2px; background: var(--fg-dim, #6A6570); opacity: 0.55; transform: translateY(-50%);"></div>
+                  <div style="position: relative; width: 16px; height: 16px; border-radius: 50%; background: var(--fg-dim, #6A6570); border: 2px solid var(--bg, #FAFAFA); z-index: 1;"></div>
+                </div>
+                <div class="serif" style="margin-top: 28px; font-size: 40px; line-height: 1.1;">ChatGPT</div>
+                <div class="mono faint" style="margin-top: 14px; font-size: 24px; line-height: 1.4; letter-spacing: 0.02em;">„wow, das kann<br>programmieren"</div>
+              </div>
+
+              <!-- 2024 -->
+              <div class="anim-fade" style="--d:700ms; text-align: center;">
+                <div class="mono dim" style="font-size: 26px; letter-spacing: 0.12em; margin-bottom: 20px;">2024</div>
+                <div style="position: relative; height: 18px; display: flex; align-items: center; justify-content: center;">
+                  <div class="anim-fade-only" style="--d:300ms; position: absolute; left: -40px; right: -40px; top: 50%; height: 2px; background: var(--fg-dim, #6A6570); opacity: 0.55; transform: translateY(-50%);"></div>
+                  <div style="position: relative; width: 16px; height: 16px; border-radius: 50%; background: var(--fg-dim, #6A6570); border: 2px solid var(--bg, #FAFAFA); z-index: 1;"></div>
+                </div>
+                <div class="serif" style="margin-top: 28px; font-size: 40px; line-height: 1.1;">Claude.ai<br><span class="faint" style="font-size: 26px;">+ Tool Calling</span></div>
+                <div class="mono faint" style="margin-top: 14px; font-size: 24px; line-height: 1.4; letter-spacing: 0.02em;">längere Gespräche,<br>interagiert mit der Welt</div>
+              </div>
+
+              <!-- 2025 -->
+              <div class="anim-fade" style="--d:900ms; text-align: center;">
+                <div class="mono dim" style="font-size: 26px; letter-spacing: 0.12em; margin-bottom: 20px;">2025</div>
+                <div style="position: relative; height: 18px; display: flex; align-items: center; justify-content: center;">
+                  <div class="anim-fade-only" style="--d:300ms; position: absolute; left: -40px; right: -40px; top: 50%; height: 2px; background: var(--fg-dim, #6A6570); opacity: 0.55; transform: translateY(-50%);"></div>
+                  <div style="position: relative; width: 16px; height: 16px; border-radius: 50%; background: var(--fg-dim, #6A6570); border: 2px solid var(--bg, #FAFAFA); z-index: 1;"></div>
+                </div>
+                <div class="serif" style="margin-top: 28px; font-size: 40px; line-height: 1.1;">Claude Code</div>
+                <div class="mono faint" style="margin-top: 14px; font-size: 24px; line-height: 1.4; letter-spacing: 0.02em;">Agent mit Terminal,<br>eigenständigem Handeln</div>
+              </div>
+
+              <!-- 2026 — accent -->
+              <div class="anim-fade" style="--d:1100ms; text-align: center;">
+                <div class="mono mag" style="font-size: 26px; letter-spacing: 0.12em; margin-bottom: 20px;">2026</div>
+                <div style="position: relative; height: 18px; display: flex; align-items: center; justify-content: center;">
+                  <div class="anim-fade-only" style="--d:300ms; position: absolute; left: -40px; right: 50%; top: 50%; height: 2px; background: var(--fg-dim, #6A6570); opacity: 0.55; transform: translateY(-50%);"></div>
+                  <div style="position: relative; width: 18px; height: 18px; border-radius: 50%; background: var(--accent, #e20074); border: 2px solid var(--bg, #FAFAFA); box-shadow: 0 0 0 5px rgba(226, 0, 116, 0.18); z-index: 1;"></div>
+                </div>
+                <div class="serif mag" style="margin-top: 28px; font-size: 40px; line-height: 1.1;">Claude Code<br>&amp; Pi</div>
+                <div class="mono faint" style="margin-top: 14px; font-size: 24px; line-height: 1.4; letter-spacing: 0.02em;">Agents, Subagents,<br>scheduled Tasks …</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Kurz zu mir: ich bin Lars, Software Engineer bei Deutsche Telekom Technik, dualer Student, letztes Jahr. Meine Bachelorarbeit untersucht wie AI Agents in der Praxis funktionieren.
+          Wie die meisten bin ich den Modell-Upgrade-Pfad gegangen. ChatGPT: wow, das kann programmieren. Claude: längere Gespräche, bessere Outputs. Claude Code: ein Agent der eigenständig handelt. Jedes Upgrade fühlte sich an wie ein Produktivitätssprung. Und dann kam der Punkt wo das aufgehört hat.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — MCP EXPLOSION
+           ============================================================ -->
+      <section id="mcp-explosion" data-screen-label="04 Mehr ist mehr">
+        <div class="kicker"></div>
+        <h2 style="margin-top: 8px;"><em>MCP</em></h2>
+
+        <div class="grow" style="display:grid; grid-template-columns: 1.1fr 1fr; align-items:center; gap: 80px;">
+          <pre style="margin: 0;"><code style="font-size: 24px; line-height: 1.7;">
+<span><span class="faint">$</span> claude mcp list</span>
+<span>  ├── Notion MCP           <span class="dim">— Wissensbasis</span></span>
+<span>  ├── Obsidian MCP         <span class="dim">— Persönliches PKM</span></span>
+<span>  ├── context7             <span class="dim">— Dokumentation</span></span>
+<span>  ├── Docling              <span class="dim">— Dokument-Parsing</span></span>
+<span>  ├── Brave Search         <span class="dim">— Web-Recherche</span></span>
+<span>  ├── GitHub MCP           <span class="dim">— Repository-Zugriff</span></span>
+<span>  ├── Memory MCP           <span class="dim">— Persistenter Speicher</span></span>
+<span>  └── <span class="faint">+ weitere…</span></span>
+</code></pre>
+
+          <div style="line-height: 1.15;">
+            <div class="serif mag" style="font-size: 72px; font-style: italic;">Full Enablement.</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 24px;">
+          <p class="muted serif" style="font-size: 34px; font-style: italic;">
+            
+          </p>
+        </div>
+
+        <aside class="notes">
+          MCP Server kamen raus und ich war begeistert. Notion für meine Wissensbasis, Obsidian für mein PKM, context7 für Docs, Docling für Dokument-Parsing. Mein Agent hatte Zugang zu allem. [Flat:] "Das musste doch besser sein." [HUMOR #2]
+          "Letzte Nacht, als ich meine Zeit mit Claude hatte..." [Pause. Doppeldeutigkeit landen lassen. Audience grinst.] "...hab ich gemerkt: wenn eine Session zu lang wird, fühlt es sich festgefahren an. Neue Ideen kommen nicht mehr durch."
+          Also hab ich angefangen Zwischenresultate zu speichern, Dokumente aus Erkenntnissen zu erstellen, frisch anzufangen mit synthetisiertem Material statt einem überladenen Kontext.
+          Was ich erst später verstanden hab: ich hab Context Engineering gemacht bevor ich wusste wie es heißt.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — NEXT TOKEN PREDICTION (refresher, click-animated)
+           ============================================================ -->
+      <section id="next-token" data-screen-label="05 Eine Wahl, viele Zukünfte">
+        <div class="kicker">Wie Sprachmodelle funktionieren</div>
+        <h2 style="margin-top: 6px; line-height: 1.05;">Next Token Prediction <em>+ Context</em></h2>
+
+        <div class="grow" style="display:flex; flex-direction: column; justify-content: center; gap: 48px; padding-top: 40px;">
+          <!-- Main sentence -->
+          <div class="tk-row" style="flex-wrap: nowrap;">
+            <span class="tk">Dear</span>
+            <span class="tk">Sarah,</span>
+            <span class="tk">I'm</span>
+            <span class="tk">writing</span>
+            <span class="tk">to</span>
+            <span class="tk is-winner">apologize</span><span class="tk-prob" style="font-family: ui-monospace, monospace; font-size: 16px; color: var(--accent, #e20074); margin: 0 10px 0 -6px; align-self: center;">0.42</span>
+            <span class="tk fragment fade-in" data-fragment-index="0">for</span>
+            <span class="tk fragment fade-in" data-fragment-index="0">missing</span>
+            <span class="tk fragment fade-in" data-fragment-index="0">your</span>
+            <span class="tk is-ghost fragment fade-in" data-fragment-index="0">…</span>
+          </div>
+
+          <!-- Branch continuations — one per click -->
+          <div class="tk-branches" style="margin-left: 678px;">
+            <div class="tk-branch fragment fade-in" data-fragment-index="0">
+              <span class="tk is-candidate">invite</span><span class="tk-prob" style="font-family: ui-monospace, monospace; font-size: 15px; color: var(--fg-muted, #888); margin: 0 10px 0 -4px; align-self: center;">0.21</span>
+              <span class="tk">you</span>
+              <span class="tk">to</span>
+              <span class="tk">our</span>
+              <span class="tk">wedding</span>
+              <span class="tk is-ghost">…</span>
+            </div>
+            <div class="tk-branch fragment fade-in" data-fragment-index="0">
+              <span class="tk is-candidate">tell</span><span class="tk-prob" style="font-family: ui-monospace, monospace; font-size: 15px; color: var(--fg-muted, #888); margin: 0 10px 0 -4px; align-self: center;">0.14</span>
+              <span class="tk">you</span>
+              <span class="tk">the</span>
+              <span class="tk">news</span>
+              <span class="tk">from</span>
+              <span class="tk">home</span>
+              <span class="tk is-ghost">…</span>
+            </div>
+            <div class="tk-branch fragment fade-in" data-fragment-index="0">
+              <span class="tk is-candidate">thank</span><span class="tk-prob" style="font-family: ui-monospace, monospace; font-size: 15px; color: var(--fg-muted, #888); margin: 0 10px 0 -4px; align-self: center;">0.08</span>
+              <span class="tk">you</span>
+              <span class="tk">for</span>
+              <span class="tk">the</span>
+              <span class="tk">kind</span>
+              <span class="tk">note</span>
+              <span class="tk is-ghost">…</span>
+            </div>
+          </div>
+        </div>
+
+
+        <aside class="notes">
+          Kurz zur Erinnerung wie Sprachmodelle funktionieren. Sie sagen das nächste Token voraus. Aber nicht nur eins: eine Wahrscheinlichkeitsverteilung über alle möglichen Tokens. "Dear Sarah, I'm writing to" — und dann ist "apologize" die wahrscheinlichste Fortsetzung. Aber auch "invite you to our wedding" wäre plausibel. Oder "tell you the news from home". Oder "thank you for the kind note". Jede dieser Fortsetzungen öffnet einen komplett anderen Brief. One choice, many futures. Und die Wahl hängt komplett vom Context davor ab. Ändert sich ein Token — ändert sich alles Nachfolgende.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — CONTEXT BUILDS (refresher, turn-cards)
+           ============================================================ -->
+      <section id="context-anatomy" data-screen-label="06 Kontext wächst">
+        <h2 style="margin-top: 6px; line-height: 1.05;">Context-<em>Window</em></h2>
+
+        <div class="grow" style="display:flex; align-items:center; margin-top: 32px;">
+          <div class="turns">
+            <!-- TURN 1 -->
+            <div class="turn-card">
+              <div class="turn-meta">Turn 1</div>
+              <div class="turn-title">Am Anfang</div>
+              <div class="turn-rows">
+                <div class="turn-row r-system"><div class="r-label">system</div><div class="r-body">be helpful</div></div>
+                <div class="turn-row r-user"><div class="r-label">user</div><div class="r-body">plan a trip to Lisbon</div></div>
+                <div class="turn-row r-empty"><div class="r-label"></div><div class="r-body"></div></div>
+                <div class="turn-row r-empty"><div class="r-label"></div><div class="r-body"></div></div>
+                <div class="turn-row r-empty"><div class="r-label"></div><div class="r-body"></div></div>
+              </div>
+            </div>
+
+            <div class="plus fragment fade-in" data-fragment-index="0">+</div>
+
+            <!-- TURN 3 -->
+            <div class="turn-card fragment fade-in" data-fragment-index="0">
+              <div class="turn-meta">Turn 3</div>
+              <div class="turn-title">Ein paar Antworten später</div>
+              <div class="turn-rows">
+                <div class="turn-row r-system"><div class="r-label">system</div><div class="r-body">be helpful</div></div>
+                <div class="turn-row r-user"><div class="r-label">user</div><div class="r-body">plan a trip to Lisbon</div></div>
+                <div class="turn-row r-assistant"><div class="r-label">assistant</div><div class="r-body">five neighbourhoods…</div></div>
+                <div class="turn-row r-user"><div class="r-label">user</div><div class="r-body">Alfama — food?</div></div>
+                <div class="turn-row r-empty"><div class="r-label"></div><div class="r-body"></div></div>
+              </div>
+            </div>
+
+            <div class="plus fragment fade-in" data-fragment-index="1">+</div>
+
+            <!-- TURN 10 -->
+            <div class="turn-card fragment fade-in" data-fragment-index="1">
+              <div class="turn-meta">Turn 10</div>
+              <div class="turn-title">Der Stapel wächst</div>
+              <div class="turn-rows">
+                <div class="turn-row r-system"><div class="r-label">system</div><div class="r-body">be helpful</div></div>
+                <div class="turn-row r-user"><div class="r-label">user</div><div class="r-body">plan a trip to Lisbon</div></div>
+                <div class="turn-row r-assistant"><div class="r-label">assistant</div><div class="r-body">five neighbourhoods…</div></div>
+                <div class="turn-row r-tools"><div class="r-label">tools</div><div class="r-body">search_neighbourhoods</div></div>
+                <div class="turn-row r-user"><div class="r-label">user</div><div class="r-body">search_results</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Was genau wächst da eigentlich im Context-Window? Turn 1: System prompt und die erste User-Nachricht. Context ist klein. Turn 3: das Modell hat geantwortet, der User hat nachgefragt. System bleibt, User-Message bleibt, Assistant-Reply kommt dazu, neue User-Message kommt dazu. Turn 10: dazu kommen Tool Calls, Tool Results, weitere Messages. Der Punkt: alles was einmal drin ist, bleibt drin. Der Context baut sich auf. Und ab einem gewissen Punkt seht ihr was dann passiert wenn der Stapel zu groß wird.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — SUBAGENTS (two context windows, clean style)
+           ============================================================ -->
+      <section id="subagents-why" data-screen-label="07 Subagents">
+        <div class="kicker anim-fade-only" style="--d:0ms">Strategie 1 · Delegation</div>
+        <h2 class="anim-fade" style="--d:120ms; margin-top: 6px; line-height: 1.05;">Subagents — frisches <em>Context Window</em></h2>
+
+        <div class="grow anim-fade-only" style="--d:350ms; display:flex; align-items:center; margin-top: 20px;">
+          <div class="ctx-scene">
+
+            <!-- MAIN CONTEXT (turn-card style) -->
+            <div class="ctx-col">
+              <div class="ctx-rail">200K TOKENS</div>
+              <div class="turn-card ctx-card-stack">
+                <div class="turn-meta">Context Window</div>
+                <div class="turn-title">Main</div>
+                <div class="turn-rows">
+                  <div class="turn-row r-system">
+                    <div class="r-label">system</div>
+                    <div class="r-body">Claude Code · tool defs</div>
+                  </div>
+                  <div class="turn-row r-user"><div class="r-label">user</div><div class="r-body">analysiere die Codebase</div></div>
+                  <div class="turn-row r-assistant"><div class="r-label">skill</div><div class="r-body">code-analysis-workflow</div></div>
+                  <div class="turn-row r-tools"><div class="r-label">tool</div><div class="r-body">askUserQuestion</div></div>
+                  <div class="turn-row r-tools ctx-exit">
+                    <div class="r-label">tool</div>
+                    <div class="r-body"><em class="mag">task(subagent)</em></div>
+                  </div>
+                  <div class="turn-row r-assistant ctx-enter">
+                    <div class="r-label">summary</div>
+                    <div class="r-body">← agent result</div>
+                  </div>
+                  <div class="turn-row r-user"><div class="r-label">user</div><div class="r-body">output to user</div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CONNECTOR -->
+            <div class="ctx-link fragment fade-in" data-fragment-index="0" aria-hidden="true">
+              <svg viewBox="0 0 80 300" preserveAspectRatio="none">
+                <path d="M 4 160 C 40 160, 40 120, 76 120" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+                <path d="M 76 180 C 40 180, 40 220, 4 220" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4"/>
+                <polygon points="76,120 70,116 70,124" fill="var(--accent)"/>
+                <polygon points="4,220 10,216 10,224" fill="var(--accent)"/>
+              </svg>
+            </div>
+
+            <!-- SUBAGENT CONTEXT -->
+            <div class="ctx-col fragment fade-in" data-fragment-index="0">
+              <div class="ctx-rail">200K TOKENS</div>
+              <div class="turn-card ctx-card-stack">
+                <div class="turn-meta"><span class="mag">Subagent</span> Context Window</div>
+                <div class="turn-title">Spezialist</div>
+                <div class="turn-rows">
+                  <div class="turn-row r-system">
+                    <div class="r-label">system</div>
+                    <div class="r-body"><span class="mag">Agent</span> prompt · tool defs</div>
+                  </div>
+                  <div class="turn-row r-user"><div class="r-label">task</div><div class="r-body">analysiere crm.sql + pda.sql</div></div>
+                  <div class="turn-row r-tools"><div class="r-label">tool</div><div class="r-body">read pack_body_crm.sql</div></div>
+                  <div class="turn-row r-tools"><div class="r-label">tool</div><div class="r-body">grep "RAISE_APP_ERROR"</div></div>
+                  <div class="turn-row r-tools"><div class="r-label">tool</div><div class="r-body">read pack_body_pda.sql</div></div>
+                  <div class="turn-row r-tools"><div class="r-label">tool</div><div class="r-body">write code-analysis.md</div></div>
+                  <div class="turn-row r-assistant"><div class="r-label">return</div><div class="r-body">Analysis (summarized)</div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- BENEFITS / DOWNSIDES -->
+            <div class="ctx-sidecards fragment fade-in" data-fragment-index="1">
+              <div class="ctx-note ctx-note-plus">
+                <div class="ctx-note-title">Benefits</div>
+                <ul>
+                  <li>Main hat mehr Platz für User-Interaktion</li>
+                  <li>Subagent: frische 200K</li>
+                  <li>Mehrere parallel möglich</li>
+                </ul>
+              </div>
+              <div class="ctx-note ctx-note-minus">
+                <div class="ctx-note-title">Downsides</div>
+                <ul>
+                  <li>Detailverlust beim Summarize</li>
+                  <li>Keine User-Interaktion im Subagent</li>
+                  <li>Keine nested Delegation</li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <aside class="notes">
+          Strategie eins: Subagents. Der Main Context delegiert Arbeit an einen Subagent — der bekommt ein frisches 200K Window. Der macht seine Arbeit, summarized das Ergebnis, und dein Main Context kriegt nur die Zusammenfassung zurück. Tradeoff: Detailverlust. Aber: parallelisierbar, und Main bleibt sauber.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — COMPACT CONVERSATION (clean style)
+           ============================================================ -->
+      <section id="subagents-vs-compact" data-screen-label="08 Compact Conversation">
+        <div class="kicker anim-fade-only" style="--d:0ms">Strategie 2 · Kompression</div>
+        <h2 class="anim-fade" style="--d:120ms; margin-top: 6px; line-height: 1.05;">Compact — <em>verdichten</em> statt verzweigen</h2>
+
+        <div class="grow anim-fade-only" style="--d:350ms; display:flex; align-items:center; margin-top: 20px;">
+          <div class="ctx-scene">
+
+            <!-- BEFORE -->
+            <div class="ctx-col">
+              <div class="ctx-rail">200K TOKENS</div>
+              <div class="turn-card ctx-card-stack">
+                <div class="turn-meta">Context Window</div>
+                <div class="turn-title">Vor Compact</div>
+                <div class="turn-rows">
+                  <div class="turn-row r-system"><div class="r-label">system</div><div class="r-body">Claude Code · tool defs</div></div>
+                  <div class="turn-row r-user"><div class="r-label">user</div><div class="r-body">analysiere die Codebase</div></div>
+                  <div class="turn-row r-assistant"><div class="r-label">skill</div><div class="r-body">code-analysis-workflow</div></div>
+                  <div class="turn-row r-tools"><div class="r-label">tool</div><div class="r-body">read pack_body_crm.sql</div></div>
+                  <div class="turn-row r-tools"><div class="r-label">tool</div><div class="r-body">grep "RAISE_APP_ERROR"</div></div>
+                  <div class="turn-row r-tools"><div class="r-label">tool</div><div class="r-body">read pack_body_pda.sql</div></div>
+                  <div class="turn-row ctx-full-row">
+                    <div class="r-label">!</div>
+                    <div class="r-body">CONTEXT FULL</div>
+                  </div>
+                  <div class="turn-row r-user ctx-exit">
+                    <div class="r-label">action</div>
+                    <div class="r-body"><em class="mag">Compact Conversation</em></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CONNECTOR -->
+            <div class="ctx-link fragment fade-in" data-fragment-index="0" aria-hidden="true">
+              <svg viewBox="0 0 80 600" preserveAspectRatio="none">
+                <defs>
+                  <marker id="compact-arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
+                  </marker>
+                </defs>
+                <path d="M -50 553 C 60 553, 20 190, 210 190"
+                      fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"
+                      marker-end="url(#compact-arrowhead)"
+                      class="compact-path"/>
+              </svg>
+            </div>
+
+            <!-- AFTER -->
+            <div class="ctx-col fragment fade-in" data-fragment-index="0">
+              <div class="ctx-rail">200K TOKENS</div>
+              <div class="turn-card ctx-card-stack">
+                <div class="turn-meta"><span class="mag">Clear</span> Context Window</div>
+                <div class="turn-title">Nach Compact</div>
+                <div class="turn-rows">
+                  <div class="turn-row r-system"><div class="r-label">system</div><div class="r-body">Claude Code · tool defs</div></div>
+                  <div class="turn-row r-assistant ctx-enter"><div class="r-label">summary</div><div class="r-body">komprimierte Historie</div></div>
+                  <div class="turn-row r-tools"><div class="r-label">tool</div><div class="r-body">write code-analysis.md</div></div>
+                  <div class="turn-row r-user"><div class="r-label">user</div><div class="r-body">output analysis summary</div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- BENEFITS / DOWNSIDES -->
+            <div class="ctx-sidecards fragment fade-in" data-fragment-index="1">
+              <div class="ctx-note ctx-note-plus">
+                <div class="ctx-note-title">Benefits</div>
+                <ul>
+                  <li>Nicht limitiert auf 200K</li>
+                  <li>Erhält essentiellen Kontext</li>
+                </ul>
+              </div>
+              <div class="ctx-note ctx-note-minus">
+                <div class="ctx-note-title">Downsides</div>
+                <ul>
+                  <li>Detailverlust bei großer Codebase</li>
+                  <li>"Context Rot"</li>
+                  <li>Unvorhersagbares Timing</li>
+                  <li>Kann Context-Korruption verursachen</li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <aside class="notes">
+          Strategie zwei: Compact. Context läuft voll, System komprimiert alles zu einer Summary, Session läuft weiter. Dieselbe Session, keine Delegation. Aber: unvorhersagbar, kann Context-Korruption verursachen. Du entscheidest nicht wann — das System tut's.
+        </aside>
+      </section>
+
+
+      <!-- ============================================================
+           SLIDE — /CONTEXT SCREENSHOT (split 1/3)
+           ============================================================ -->
+      <section id="context-screenshot" data-screen-label="09 /context Screenshot">
+        <div class="kicker anim-fade-only" style="--d:0ms">
+          <span class="mono" style="color: var(--accent);">/context</span>
+        </div>
+
+        <div class="grow anim-fade-only" style="--d:300ms; display:flex; align-items:center; justify-content:center; margin-top: 8px;">
+          <div class="shot-frame" style="max-width: 1720px; width: 100%;">
+            <img src="img/context-usage.png" alt="/context output" class="shot shot-parallax" style="max-height: 820px; width: 100%; object-fit: contain;">
+          </div>
+        </div>
+
+        <aside class="notes">
+          Dann hat Claude Code den /context Befehl eingeführt. Und ich hab zum ersten Mal gesehen was da wirklich passiert. Meine MCP Server haben über ein Drittel meines Context Windows gefressen — mit Tool-Definitionen die der Agent in dieser Session gar nicht braucht.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — CONTEXT ROT NUMBERS (split 2/3) — count up
+           ============================================================ -->
+      <section id="context-numbers" data-screen-label="10 Context Rot Numbers" class="section-center">
+        <h2 class="display anim-fade" style="--d:0ms; font-size: 68px; line-height: 1.08; max-width: 1500px; text-align:center;">
+          Sinkende Accuracy bei <em class="mag">mehr Context.</em>
+        </h2>
+        <div class="mono-kicker anim-fade-only" style="--d:200ms; margin-top: 18px; font-size: 20px; letter-spacing: 0.18em;">
+          Repeated Words · Performance by Input Length
+        </div>
+
+        <!-- Chart -->
+        <figure class="ctx-chart anim-fade" style="--d:400ms; margin: 40px 0 0 0;">
+          <svg viewBox="0 0 1400 640" role="img" aria-label="Line chart: model accuracy falls as input length grows" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="ctx-plot-clip">
+                <rect x="120" y="40" width="1180" height="500"></rect>
+              </clipPath>
+            </defs>
+
+            <!-- Plot frame -->
+            <g class="ctx-grid">
+              <!-- Horizontal gridlines at y = 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 -->
+              <line x1="120" x2="1300" y1="540" y2="540"></line> <!-- 0.5 -->
+              <line x1="120" x2="1300" y1="440" y2="440"></line> <!-- 0.6 -->
+              <line x1="120" x2="1300" y1="340" y2="340"></line> <!-- 0.7 -->
+              <line x1="120" x2="1300" y1="240" y2="240"></line> <!-- 0.8 -->
+              <line x1="120" x2="1300" y1="140" y2="140"></line> <!-- 0.9 -->
+              <line x1="120" x2="1300" y1="40"  y2="40"  class="ctx-grid-top"></line>  <!-- 1.0 -->
+            </g>
+
+            <!-- Y axis labels (accuracy) -->
+            <g class="ctx-axis-label">
+              <text x="104" y="545" text-anchor="end">0.5</text>
+              <text x="104" y="445" text-anchor="end">0.6</text>
+              <text x="104" y="345" text-anchor="end">0.7</text>
+              <text x="104" y="245" text-anchor="end">0.8</text>
+              <text x="104" y="145" text-anchor="end">0.9</text>
+              <text x="104" y="45"  text-anchor="end">1.0</text>
+            </g>
+
+            <!-- X axis tick labels (log scale 40 → 16000 tokens) -->
+            <g class="ctx-axis-label">
+              <!-- positions: log10(x) mapped to [120, 1300] where 40≈1.6 → 16000≈4.2 -->
+              <text x="120"  y="580" text-anchor="middle">100</text>
+              <text x="573"  y="580" text-anchor="middle">1,000</text>
+              <text x="1027" y="580" text-anchor="middle">10,000</text>
+            </g>
+            <text class="ctx-axis-title" x="710" y="618" text-anchor="middle">Input Length (Tokens)</text>
+            <text class="ctx-axis-title" x="40" y="290" text-anchor="middle" transform="rotate(-90 40 290)">Normalized Levenshtein Score</text>
+
+            <!-- Plotted lines.
+                 x mapping: x_px = 120 + (log10(tokens) - log10(100)) / (log10(16000) - log10(100)) * 1180
+                 y mapping: y_px = 40 + (1.0 - score) / 0.5 * 500
+                 We clip to the plot area so dots on the left edge don't overflow axis gutter. -->
+            <g clip-path="url(#ctx-plot-clip)">
+
+              <!-- Other models: muted background context -->
+              <!-- GPT-4.1 -->
+              <polyline class="ctx-line ctx-ghost"
+                points="74,50 286,380 409,336 568,462 741,490 890,540 1024,540 1198,540"></polyline>
+              <!-- Qwen3-32B -->
+              <polyline class="ctx-line ctx-ghost"
+                points="74,90 286,60 409,120 568,298 741,380 890,490 1024,540"></polyline>
+              <!-- Gemini 2.5 Flash -->
+              <polyline class="ctx-line ctx-ghost"
+                points="74,90 286,382 409,352 568,498 741,520 890,530 1024,580 1198,540"></polyline>
+
+              <!-- Dots for ghost lines -->
+              <g class="ctx-ghost-dots">
+                <!-- GPT-4.1 -->
+                <circle cx="74"   cy="50"  r="4"/>
+                <circle cx="286"  cy="380" r="4"/>
+                <circle cx="409"  cy="336" r="4"/>
+                <circle cx="568"  cy="462" r="4"/>
+                <circle cx="741"  cy="490" r="4"/>
+                <circle cx="890"  cy="540" r="4"/>
+                <circle cx="1024" cy="540" r="4"/>
+                <circle cx="1198" cy="540" r="4"/>
+                <!-- Qwen3-32B -->
+                <circle cx="74"   cy="90"  r="4"/>
+                <circle cx="286"  cy="60"  r="4"/>
+                <circle cx="409"  cy="120" r="4"/>
+                <circle cx="568"  cy="298" r="4"/>
+                <circle cx="741"  cy="380" r="4"/>
+                <circle cx="890"  cy="490" r="4"/>
+                <circle cx="1024" cy="540" r="4"/>
+                <!-- Gemini 2.5 Flash -->
+                <circle cx="286"  cy="382" r="4"/>
+                <circle cx="409"  cy="352" r="4"/>
+                <circle cx="568"  cy="498" r="4"/>
+                <circle cx="741"  cy="520" r="4"/>
+                <circle cx="890"  cy="530" r="4"/>
+                <circle cx="1024" cy="580" r="4"/>
+                <circle cx="1198" cy="540" r="4"/>
+              </g>
+
+              <!-- Claude Sonnet — hero line, Telekom magenta -->
+              <polyline class="ctx-line ctx-hero"
+                points="74,40 286,40 409,40 568,84 741,100 890,400 1024,540"></polyline>
+              <g class="ctx-hero-dots">
+                <circle cx="74"   cy="40"/>
+                <circle cx="286"  cy="40"/>
+                <circle cx="409"  cy="40"/>
+                <circle cx="568"  cy="84"/>
+                <circle cx="741"  cy="100"/>
+                <circle cx="890"  cy="400"/>
+                <circle cx="1024" cy="540"/>
+              </g>
+            </g>
+
+            <!-- Highlight annotations on hero line -->
+            <g class="ctx-callout">
+              <!-- 89% at low context -->
+              <line x1="286" y1="40"  x2="286" y2="24"></line>
+              <text x="286" y="18" text-anchor="middle">~1.0</text>
+              <!-- 38% at high context -->
+              <line x1="890" y1="400" x2="920" y2="430"></line>
+              <text x="928" y="440" text-anchor="start">0.60</text>
+            </g>
+          </svg>
+
+          <!-- Legend -->
+          <div class="ctx-legend">
+            <span class="ctx-legend-item hero">
+              <span class="ctx-swatch"></span>Claude Sonnet 4
+            </span>
+            <span class="ctx-legend-item">
+              <span class="ctx-swatch ghost"></span>GPT-4.1
+            </span>
+            <span class="ctx-legend-item">
+              <span class="ctx-swatch ghost"></span>Qwen3-32B
+            </span>
+            <span class="ctx-legend-item">
+              <span class="ctx-swatch ghost"></span>Gemini 2.5 Flash
+            </span>
+          </div>
+
+          <figcaption class="mono muted anim-fade-only" style="--d:900ms; margin-top: 28px; font-size: 18px; letter-spacing: 0.04em;">
+            Chroma Research · Hong et al. 2025 — Repeated Words Task
+          </figcaption>
+        </figure>
+
+        <aside class="notes">
+          Für die Engineers im Raum: das ist nicht O(1) — er nimmt nicht einfach Platz weg. Das ist mindestens O(n): jeder irrelevante Token verschlechtert aktiv die Aufmerksamkeit auf die relevanten.
+          Das Chroma Research Team hat das quantifiziert: Claude Sonnet bleibt lange stabil — aber jenseits von ein paar tausend Token kippt die Accuracy dramatisch. Und die anderen Modelle sind noch früher am Boden. Irrelevanter Context macht den Agent nicht neutral — er macht ihn aktiv dümmer.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — CONTEXT ROT NAME (split 3/3)
+           ============================================================ -->
+      <section id="context-rot" data-screen-label="11 Context Rot" class="section-center">
+        <div class="display display-xl anim-fade" style="--d:200ms; line-height: 0.98;">
+          <em>Context&nbsp;Rot</em>
+        </div>
+
+        <!-- Animated supporting visualization: a token field decaying as more pile in.
+             Tokens appear one-by-one; the first are magenta (attended-to), later ones
+             dim to ghost. An "attention" meter above falls as tokens accumulate. -->
+        <div class="rot-viz anim-fade-only" style="--d:700ms; margin-top: 56px;">
+          <div class="rot-meter" aria-hidden="true">
+            <div class="rot-meter-track">
+              <div class="rot-meter-fill"></div>
+            </div>
+            <div class="rot-meter-labels">
+              <span class="mono rot-meter-l">attention</span>
+              <span class="mono rot-meter-r"><span class="rot-meter-num">100</span><span class="rot-meter-pct">%</span></span>
+            </div>
+          </div>
+
+          <div class="rot-field" aria-hidden="true"></div>
+          <script>
+            (function(){
+              // Populate the token grid once (works whether this slide is
+              // the current one or not — CSS drives the animation timing).
+              var cols = 48, rows = 8, total = cols * rows;
+              var field = document.currentScript.previousElementSibling;
+              if (!field || field.childElementCount) return;
+              var frag = document.createDocumentFragment();
+              // First ~18 tokens are the "relevant" ones the agent actually
+              // needs. After that, each added token pushes the old ones
+              // toward ghost. We stagger both the "appear" and "dim"
+              // animations on a per-index basis, with some jitter.
+              for (var i = 0; i < total; i++) {
+                var el = document.createElement('span');
+                el.className = 'tok';
+                // stagger: appear across ~6s, small jitter
+                var t = i / total;
+                var jitter = (Math.sin(i * 12.9898) * 43758.5453) % 1;
+                if (jitter < 0) jitter += 1;
+                var inDelay  = Math.round(t * 5800 + jitter * 120);
+                // dim begins once the token has been on-screen briefly,
+                // and escalates for later tokens (O(n) decay).
+                var dimDelay = inDelay + 260 + Math.round(t * 900);
+                el.style.setProperty('--in',  inDelay + 'ms');
+                el.style.setProperty('--dim', dimDelay + 'ms');
+                frag.appendChild(el);
+              }
+              field.appendChild(frag);
+            })();
+          </script>
+
+          <div class="rot-caption mono">
+            <span class="rot-oset">
+              <span class="rot-o1">O(1)</span>
+              <span class="rot-on mag">O(n)</span>
+            </span>
+            <span class="rot-sep">·</span>
+            <span>jeder irrelevante Token kostet Aufmerksamkeit</span>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Context Rot. Und ich bin überzeugt dass das das zentrale Problem ist das die meisten noch nicht auf dem Schirm haben.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — SUCHE NACH LOESUNGEN
+           ============================================================ -->
+      <section id="solution-search" data-screen-label="12 Suche nach Lösungen">
+        <h2 class="anim-fade" style="--d:120ms; margin-top: 8px;"><em>Strip Down</em></h2>
+
+        <div class="grow" style="display:flex; align-items:center;">
+          <pre style="margin: 0; width: 100%;"><code style="font-size: 24px;">
+<span class="anim-fade" style="--d:300ms"><span class="faint">MCP naive       </span>  →  alles immer geladen            <span class="neg">~10,000 Tokens</span></span>
+<span class="anim-fade" style="--d:300ms"><span class="faint">Strip-Down      </span>  →  alles raus, beobachten         <span class="dim">/context nutzen</span></span>
+<span class="anim-fade" style="--d:300ms"><span class="faint">Dynamic MCP     </span>  →  on demand laden                <span class="pos">Hidden Flag → Standard</span></span>
+<span class="anim-fade" style="--d:300ms"><span class="faint">Docker Gateway  </span>  →  MCP zur Laufzeit zuschalten    <span class="dim">200+ Katalog</span></span>
+<span class="anim-fade" style="--d:300ms"><span class="mag">Agent Skills    </span>  →  Progressive Disclosure         <span class="mag">&lt;200 Tokens ★</span></span>
+</code></pre>
+        </div>
+
+        <aside class="notes">
+          Mein erster Reflex war: alles raus. MCP Server einzeln abschalten, /context beobachten. Fast alle Server rausgeflogen.
+          Dann hat Anthropic — erstmal leise als Hidden Flag — Dynamic MCP Loading eingeführt. Riesiger Schritt. Monate später Standard-Feature.
+          Credits ans Claude Code Team: MCP, Agent Skills, Dynamic Loading, Memory, Session Reflections — alles in einem halben Jahr. Tools die für Millionen funktionieren müssen.
+          Und mittlerweile: für die meisten Cases sind Agent Skills der effektivere Weg. Von 10.000 auf unter 200 Tokens. Gleiche Fähigkeit.
+        </aside>
+      </section>
+      <!-- ============================================================
+           SLIDE 13a — WAS IST EIN SKILL (SKILL.md)
+           ============================================================ -->
+      <section id="skills" data-screen-label="13 Skills — SKILL.md">
+        <h2 class="anim-fade" style="--d:100ms; text-align: center;">Skills</h2>
+
+        <div class="grow anim-fade-only" style="--d:350ms; display:flex; align-items:center; justify-content:center; margin-top: 12px;">
+          <div class="skill-card" style="width: 1400px; max-width: 95%;">
+            <div class="sc-path">pdf/SKILL.md</div>
+
+            <div class="skill-zone yaml">
+              <span class="sz-label">YAML Frontmatter</span>
+<pre><span class="sc-dash">---</span>
+<span class="sc-k">name</span>: <span class="sc-v">pdf</span>
+<span class="sc-k">description</span>: <span class="sc-v">Comprehensive PDF toolkit for extracting text and tables,</span>
+             <span class="sc-v">merging/splitting documents, and filling-out forms.</span>
+<span class="sc-dash">---</span></pre>
+            </div>
+
+            <div class="skill-zone md">
+              <span class="sz-label">Markdown</span>
+<pre><span class="sc-h">## Overview</span>
+
+<span class="sc-dim">This guide covers essential PDF processing operations using Python libraries</span>
+<span class="sc-dim">and command-line tools. For advanced features, JavaScript libraries, and</span>
+<span class="sc-dim">detailed examples, see ./reference.md.</span>
+<span class="sc-dim">If you need to fill out a PDF form, read ./forms.md and follow its instructions.</span>
+
+<span class="sc-h">## Quick Start</span>
+
+<span class="sc-dim">```python</span>
+<span class="sc-dim">from pypdf import PdfReader, PdfWriter</span>
+
+<span class="sc-dim"># Read a PDF</span>
+<span class="sc-dim">reader = PdfReader("document.pdf")</span>
+<span class="sc-dim">print(f"Pages: {len(reader.pages)}")</span>
+
+<span class="sc-dim">…</span></pre>
+            </div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Das ist ein Skill. Eine einzige Markdown-Datei mit zwei Zonen: YAML Frontmatter oben — name, description — und Markdown unten. Die description ist das Entscheidende: daran erkennt der Agent ob dieser Skill für die aktuelle Aufgabe relevant ist. Nur wenn ja, wird der Markdown-Body geladen. Das ist der erste Level.
+        </aside>
+      </section>
+
+
+      <!-- ============================================================
+           SLIDE 13b — BUNDLING (Progressive Disclosure visuell)
+           ============================================================ -->
+      <section id="skills-bundling" data-screen-label="14 Skills — Bundling">
+        <div class="grow anim-fade-only" style="--d:350ms; display:flex; align-items:center; justify-content:center; margin-top: 12px;">
+          <div class="skill-bundle" style="width: 1580px; max-width: 96%;">
+
+            <!-- Main SKILL.md -->
+            <div class="skill-card">
+              <div class="sc-path">pdf/SKILL.md</div>
+
+              <div class="skill-zone yaml">
+                <span class="sz-label">YAML Frontmatter</span>
+<pre><span class="sc-dash">---</span>
+<span class="sc-k">name</span>: <span class="sc-v">pdf</span>
+<span class="sc-k">description</span>: <span class="sc-v">Comprehensive PDF toolkit for extracting text and</span>
+             <span class="sc-v">tables, merging/splitting documents, and filling-out forms.</span>
+<span class="sc-dash">---</span></pre>
+              </div>
+
+              <div class="skill-zone md">
+                <span class="sz-label">Markdown</span>
+<pre><span class="sc-h">## Overview</span>
+
+<span class="sc-dim">This guide covers essential PDF processing operations using Python</span>
+<span class="sc-dim">libraries and command-line tools. For advanced features,</span>
+<span class="sc-dim">JavaScript libraries, and detailed examples, see </span><span class="sc-link" id="lnk-ref">./reference.md</span><span class="sc-dim">.</span>
+<span class="sc-dim">If you need to fill out a PDF form, read </span><span class="sc-link" id="lnk-forms">./forms.md</span><span class="sc-dim"> and follow its</span>
+<span class="sc-dim">instructions.</span>
+
+<span class="sc-h">## Quick Start</span>
+
+<span class="sc-dim">```python</span>
+<span class="sc-dim">from pypdf import PdfReader, PdfWriter</span>
+
+<span class="sc-dim"># Read a PDF</span>
+<span class="sc-dim">reader = PdfReader("document.pdf")</span>
+<span class="sc-dim">…</span></pre>
+              </div>
+            </div>
+
+            <!-- Right column: two reference cards -->
+            <div class="skill-refs-col">
+              <div class="skill-card ref" id="card-ref">
+                <div class="sc-path">pdf/reference.md</div>
+                <div class="ref-body">
+<pre><span class="sc-h"># PDF Processing Advanced Reference</span>
+
+<span class="sc-dim">This document contains advanced PDF processing features,</span>
+<span class="sc-dim">detailed examples, and additional libraries not covered</span>
+<span class="sc-dim">in the main skill instructions.</span>
+
+<span class="sc-h">## pypdfium2 Library (Apache/BSD License)</span>
+
+<span class="sc-h">### Overview</span>
+<span class="sc-dim">pypdfium2 is a Python binding for PDFium (Chromium's PDF</span>
+<span class="sc-dim">library). It's excellent for fast PDF rendering …</span></pre>
+                </div>
+              </div>
+
+              <div class="skill-card ref" id="card-forms">
+                <div class="sc-path">pdf/forms.md</div>
+                <div class="ref-body">
+<pre><span class="sc-dim">If you need to fill out a PDF form, first check to see</span>
+<span class="sc-dim">if the PDF has fillable form fields. Run this script</span>
+<span class="sc-dim">from this file's directory:</span>
+  <span class="sc-dim">`python scripts/check_fillable_fields &lt;file.pdf&gt;`,</span>
+<span class="sc-dim">and depending on the result go to either the "Fillable</span>
+<span class="sc-dim">fields" or "Non-fillable fields" and follow those</span>
+<span class="sc-dim">instructions.</span>
+
+<span class="sc-h"># Fillable fields</span>
+<span class="sc-dim">If the PDF has fillable form fields:</span>
+<span class="sc-dim">- Run this script from this file's directory:</span>
+<span class="sc-dim">  `python scripts/extract_form_field_info.py …`</span></pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Arrows overlay -->
+            <svg class="bundle-arrows" viewBox="0 0 1580 900" preserveAspectRatio="none">
+              <defs>
+                <marker id="bundle-arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="#e0a020"/>
+                </marker>
+              </defs>
+              <!-- Arrow from ./reference.md link up-right to reference.md card -->
+              <path d="M 760 310 C 840 310, 860 150, 928 150" marker-end="url(#bundle-arrowhead)"/>
+              <!-- Arrow from ./forms.md link right-down to forms.md card -->
+              <path class="a2" d="M 760 360 C 840 360, 860 570, 928 570" marker-end="url(#bundle-arrowhead)"/>
+            </svg>
+
+          </div>
+        </div>
+
+        <aside class="notes">
+          Und wenn der Skill mehr braucht als auf eine Seite passt? Dann verweist SKILL.md auf andere Dateien. Hier: reference.md für fortgeschrittene Features, forms.md für das Ausfüllen von Formularen. Der Agent lädt diese Dateien erst wenn er sie wirklich braucht. Das ist der zweite Level. Plus Scripts im scripts/ Ordner für deterministische Operationen — der Agent ruft sie auf statt den Code selbst zu schreiben. Das ist Progressive Disclosure: Information on demand, nicht alles immer. Wie bei einem neuen Mitarbeiter — er kriegt nicht 500 Seiten Confluence am ersten Tag.
+        </aside>
+      </section>
+
+
+      <!-- ============================================================
+           SLIDE — SYSTEM PROMPT CHANGES (Einstieg Akt II)
+           ============================================================ -->
+      <section id="shifting-ground" data-screen-label="15 System Prompt Changes">
+        <div class="grow anim-fade-only" style="--d:200ms; display:flex; flex-direction: column; align-items:center; width: 100%; gap: 0; padding-top: 0;">
+
+          <!-- Main screenshot, pushed up and enlarged -->
+          <div class="shot-frame sgp-main" style="max-width: 1760px; width: 100%; position: relative; z-index: 1;">
+            <img src="img/cchistory-system-prompt-changes-v2.png" alt="cchistory — System Prompt changes" class="shot" style="max-height: 720px; width: 100%; object-fit: contain; display: block;">
+          </div>
+
+          <!-- Pulled-out text callout (no border, no arrow, no label) -->
+          <blockquote class="sgp-pullquote anim-fade" style="--d:1300ms; max-width: 1400px; width: 88%; margin-top: 88px;">
+            „IMPORTANT: this context may or may not be relevant to your tasks.
+            You should not respond to this context <em>unless it is highly relevant</em> to your task."
+          </blockquote>
+        </div>
+
+        <aside class="notes">
+          Das Grundproblem blieb. Mit jedem Update ändert sich das Verhalten meines Agents. Der System Prompt ändert sich. Informationen werden injiziert.
+          Mario Zechner — der Pi gebaut hat — hat ein Tool geschrieben das diese Änderungen tracked. Hier seht ihr wie sich der System Prompt von Release zu Release ändert.
+          In der klassischen Softwareentwicklung liest du den Changelog. Bei AI Tools ändert sich der System Prompt, die Tool-Definitionen, das Modellverhalten — und du merkst es daran dass dein Agent sich plötzlich anders verhält.
+          Und dann hab ich einen Agent gefunden wo das Steering meins bleibt.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SECTION DIVIDER — AKT II
+           ============================================================ -->
+      <section data-screen-label="16 Akt II Divider" class="section-center">
+        <div class="ambient amb-akt2" aria-hidden="true">
+          <div class="amb-orbit o3"><div class="amb-pi"></div></div>
+          <div class="amb-orbit o2"><div class="amb-pi"></div></div>
+          <div class="amb-orbit o1"><div class="amb-pi"></div></div>
+          <div class="amb-sun"></div>
+        </div>
+        <div class="divider-label anim-fade-only" style="--d:0ms">Akt II</div>
+        <div class="display display-m anim-fade" style="--d:200ms; text-align:center;">
+          Ein Love Letter an <em>Pi</em>.
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — TERMINUS PARADOX
+           ============================================================ -->
+      <section id="terminus-paradox" data-screen-label="17 Terminus Paradox">
+        <div class="grow" style="display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; gap: 80px; margin-top: 0;">
+          <!-- LEFT: big title -->
+          <div>
+            <div class="kicker anim-fade-only" style="--d:0ms">Nichts schlägt Alles</div>
+            <h2 class="anim-fade" style="--d:160ms; margin-top: 10px; font-size: 84px; line-height: 1.02;">
+              Weniger Tools.<br><em class="mag">Mehr Signal.</em>
+            </h2>
+            <p class="anim-fade" style="--d:360ms; margin-top: 36px; font-size: 28px; line-height: 1.45; max-width: 640px; color: var(--fg-muted);">
+              <em>Terminus</em> bekommt nichts außer Keystrokes und tmux-Output —<br>
+              und schlägt Systeme mit 10× mehr Tooling.
+            </p>
+          </div>
+
+          <!-- RIGHT: full-bleed image, no frame -->
+          <div class="anim-fade-only" style="--d:420ms; display:flex; align-items: center; justify-content: center;">
+            <img src="img/terminalBench-leaderboard.jpeg" alt="TerminalBench 2.0 Leaderboard" class="shot-parallax" style="max-height: 980px; width: 100%; object-fit: contain; border: none; border-radius: 0; background: transparent; box-shadow: none; display: block;">
+          </div>
+        </div>
+
+        <aside class="notes">
+          Es gibt einen Coding Agent Benchmark namens TerminalBench. Und es gibt einen Agent — Terminus — der dem Model NICHTS gibt außer Keystrokes und tmux Output. Kein File Tool, keine Sub-Agents, kein Plan-Mode.
+          Und er performt besser als Systeme mit 10x mehr Tooling. Platz 5.
+          Was sagt das über all die Features die wir draufpacken?
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — MARIO QUOTE (lead for Pi)
+           ============================================================ -->
+      <section id="mario-quote" data-screen-label="18 Mario Quote" class="section-center">
+        <div class="mono-kicker anim-fade-only" style="--d:0ms">Mario Zechner · Creator of Pi</div>
+        <blockquote class="anim-fade" style="--d:300ms; text-align:center; max-width: 1500px; font-size: 72px;">
+          „We are in the <span class="mag">mess around</span><br>and <span class="mag">find out</span> phase<br>of coding agents."
+        </blockquote>
+
+        <aside class="notes">
+          Mario sagt: we're in the mess around and find out phase of coding agents. Niemand weiß wie das perfekte AI-System aussieht.
+          Und genau deshalb brauchen wir malleable Agents — Agents die wir selbst modifizieren und erweitern können.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — TOKEN BUDGET CHART
+           ============================================================ -->
+      <section id="token-budget" data-screen-label="19 Token Budget">
+        <div class="kicker anim-fade-only" style="--d:0ms">Token Budget · System Prompt + Tool Definitions</div>
+        <h2 class="anim-fade" style="--d:120ms; margin-top: 8px;">Der Preis <em>jedes Tools</em></h2>
+
+        <div class="grow" style="display:flex; align-items:center;">
+          <div class="token-bars" style="width: 100%;">
+            <div class="tb-label anim-fade-only" style="--d:360ms">Claude Code</div>
+            <div class="tb-track">
+              <div class="tb-fill" style="--bar-to: scaleX(1); --d:360ms"></div>
+            </div>
+            <div class="tb-value anim-fade-only" style="--d:980ms" data-count="10000" data-prefix="~">0</div>
+
+            <div class="tb-label anim-fade-only" style="--d:500ms">OpenCode</div>
+            <div class="tb-track">
+              <div class="tb-fill" style="--bar-to: scaleX(0.7); --d:500ms"></div>
+            </div>
+            <div class="tb-value anim-fade-only" style="--d:1120ms" data-count="7000" data-prefix="~">0</div>
+
+            <div class="tb-label anim-fade-only" style="--d:640ms">Codex</div>
+            <div class="tb-track">
+              <div class="tb-fill" style="--bar-to: scaleX(0.3); --d:640ms"></div>
+            </div>
+            <div class="tb-value anim-fade-only" style="--d:1260ms" data-count="3000" data-prefix="~">0</div>
+
+            <div class="tb-label is-accent anim-fade-only" style="--d:780ms">pi</div>
+            <div class="tb-track">
+              <div class="tb-fill is-accent" style="--bar-to: scaleX(0.09); --d:780ms"></div>
+            </div>
+            <div class="tb-value is-accent anim-fade-only" style="--d:1400ms">&lt; 1,000</div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Mario Zechner hat Pi gebaut — einen Coding Agent mit 4 Tools und weniger als 1000 Tokens System Prompt. Auf TerminalBench schlägt er Systeme mit 10x mehr Tooling. Warum? Weil exakt kontrolliert wird was in den Context kommt.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — PI DETAILS
+           ============================================================ -->
+      <section id="pi-details" data-screen-label="20 Pi Details">
+        <div class="kicker anim-fade-only" style="--d:0ms">Pi · Mario Zechner</div>
+        <h2 class="anim-fade" style="--d:120ms; margin-top: 8px;">Vier Tools, that's it</h2>
+
+        <div class="grow" style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 80px; margin-top: 40px;">
+          <div class="anim-fade" style="--d:1000ms; max-width: 720px;">
+            <p class="muted serif" style="font-size: 44px; font-style: italic; line-height: 1.25;">
+              Der Agent startet minimal — und sucht sich seinen Context <span class="mag">selbst</span>.
+            </p>
+          </div>
+
+          <div>
+<pre style="margin: 0;"><code style="font-size: 34px; line-height: 1.9;">
+<span class="anim-fade" style="--d:360ms">  <span class="mag">read</span>    <span class="faint">— Datei lesen</span></span>
+<span class="anim-fade" style="--d:480ms">  <span class="mag">write</span>   <span class="faint">— Datei schreiben</span></span>
+<span class="anim-fade" style="--d:600ms">  <span class="mag">edit</span>    <span class="faint">— Datei editieren</span></span>
+<span class="anim-fade" style="--d:720ms">  <span class="mag">bash</span>    <span class="faint">— Kommando ausführen</span></span>
+</code></pre>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Die Kernidee: der Agent startet minimal und ist voll erweiterbar. Du schreibst TypeScript Extensions — oder du sagst dem Agent er soll die Extension für dich schreiben. Hot Reload, du siehst sofort was passiert. Du entscheidest welcher Context wann geladen wird.
+        </aside>
+      </section>
+      <!-- ============================================================
+           SLIDE — WARUM PI MICH UEBERZEUGT HAT
+           ============================================================ -->
+      <section id="pi-convinced" data-screen-label="21 Why Pi">
+        <!-- Title-option alternatives: "Gründe für Pi" · "Drei Dinge, die bleiben" · "Warum Pi." -->
+        <h2 class="anim-fade" style="--d:0ms; margin-top: 0; font-size: 88px; line-height: 1.0;">
+          Warum <em>Pi</em>
+        </h2>
+
+        <div class="grow" style="display: grid; grid-template-columns: auto 1fr; column-gap: 56px; row-gap: 44px; align-items: start; align-content: center; margin-top: 28px; padding-right: 40px;">
+
+          <!-- 01 -->
+          <div class="mono-kicker anim-fade-only" style="--d:260ms; padding-top: 14px;">01</div>
+          <div class="anim-fade" style="--d:260ms; border-top: 1px solid var(--rule); padding-top: 14px;">
+            <div class="serif" style="font-size: 48px; line-height: 1.1;">
+              Meine <em class="mag">Tools &amp; Workflows</em>
+            </div>
+            <p class="mono dim" style="font-size: 24px; margin-top: 10px; letter-spacing: 0.02em;">
+              Modell tauscht · Context bleibt.
+            </p>
+          </div>
+
+          <!-- 02 -->
+          <div class="mono-kicker anim-fade-only" style="--d:520ms; padding-top: 14px;">02</div>
+          <div class="anim-fade" style="--d:520ms; border-top: 1px solid var(--rule); padding-top: 14px;">
+            <div class="serif" style="font-size: 48px; line-height: 1.1;">
+              <em class="mag">Extendible from Core</em>
+            </div>
+            <div class="serif" style="font-size: 32px; line-height: 1.25; margin-top: 8px; color: var(--fg-muted);">
+              + Hot Reload.
+            </div>
+          </div>
+
+          <!-- 03 -->
+          <div class="mono-kicker anim-fade-only" style="--d:780ms; padding-top: 14px;">03</div>
+          <div class="anim-fade" style="--d:780ms; border-top: 1px solid var(--rule); padding-top: 14px;">
+            <div class="serif" style="font-size: 48px; line-height: 1.1;">
+              <em class="mag">Session Branching</em>
+            </div>
+            <p class="mono dim" style="font-size: 24px; margin-top: 10px; letter-spacing: 0.02em;">
+              Sub-Agents? <span class="faint">→</span> Extensions.
+            </p>
+          </div>
+        </div>
+
+        <!-- Quote anchor -->
+        <blockquote class="anim-fade-only" style="--d:1200ms; margin: 40px 0 0; padding: 28px 0 0; border-top: 1px solid var(--rule); font-family: var(--font-serif, Georgia, serif); font-style: italic; font-size: 38px; line-height: 1.25; color: var(--fg);">
+          „There are many coding agents, but this one is <em class="mag">mine</em>."
+        </blockquote>
+
+        <aside class="notes">
+          Drei Gründe, warum Pi mich überzeugt hat — und alle drei laufen auf denselben Gedanken hinaus: was ich investiere, bleibt meins.
+          Eins: mein Steering überlebt jedes Modell-Update. Claude, GPT, Gemini — austauschbar. Mein Context bleibt.
+          Zwei: Extensions sind kein Workaround, sie sind Hot Reload. Du speicherst ein TypeScript-Modul, es wirkt sofort.
+          Drei: Session Branching statt Sub-Agents. Side-Quest, Context sammeln, zurück zum Main. Alles transparent, nichts delegiert ins Dunkel.
+          „There are many coding agents, but this one is mine."
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — KEIN NISCHENTHEMA / CREDIT BALANCE
+           ============================================================ -->
+      <section id="pi-niche" data-screen-label="22 Pi not niche">
+        <h2 class="anim-fade" style="--d:120ms; margin-top: 8px;">
+          Pi ist der agentic Core von <span class="mag">OpenClaw</span>
+        </h2>
+
+        <div class="grow" style="display:flex; align-items:center;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; width: 100%;">
+            <div class="anim-fade" style="--d:360ms" >
+              <div class="mono-kicker" style="color: var(--fg-dim); margin-bottom: 14px; font-size: 20px;">Claude Code</div>
+              <p class="mono" style="font-size: 30px; line-height: 1.5;">
+                MCP · Agent Skills · Dynamic Loading · Memory.<br>
+                <span class="faint">Tools die für Millionen funktionieren müssen.</span>
+              </p>
+            </div>
+            <div class="anim-fade" style="--d:520ms">
+              <div class="mono-kicker" style="color: var(--accent); margin-bottom: 14px; font-size: 20px;">Pi</div>
+              <p class="mono" style="font-size: 30px; line-height: 1.5;">
+                Für Leute die ihr eigenes System bauen wollen.<br>
+                <span class="faint">Volle Kontrolle über den Context.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Pi ist mittlerweile der agentic Core von OpenClaw — das zeigt: minimale, erweiterbare Agents sind kein Nischenthema mehr.
+          Das Claude Code Team liefert beeindruckende Arbeit — MCP, Agent Skills, Dynamic Loading, Memory. Tools die für Millionen funktionieren müssen. Pi ist für Leute die volle Kontrolle wollen. Ich nutze beides.
+          Transition: Aber funktioniert das wirklich? Ich hatte die Chance das zu testen. In Produktion.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SECTION DIVIDER — AKT III
+           ============================================================ -->
+      <section data-screen-label="23 Akt III Divider" class="section-center">
+        <div class="ambient amb-akt3" aria-hidden="true">
+          <svg viewBox="-700 -450 1400 900">
+            <!-- Lines from the edges converging to origin -->
+            <line class="amb-line" x1="-680" y1="-420" x2="0" y2="0" style="animation-delay: 0ms;"/>
+            <line class="amb-line" x1="680"  y1="-420" x2="0" y2="0" style="animation-delay: 300ms;"/>
+            <line class="amb-line" x1="-680" y1="420"  x2="0" y2="0" style="animation-delay: 600ms;"/>
+            <line class="amb-line" x1="680"  y1="420"  x2="0" y2="0" style="animation-delay: 900ms;"/>
+            <line class="amb-line" x1="-680" y1="0"    x2="0" y2="0" style="animation-delay: 1200ms;"/>
+            <line class="amb-line" x1="680"  y1="0"    x2="0" y2="0" style="animation-delay: 1500ms;"/>
+            <line class="amb-line" x1="0"    y1="-420" x2="0" y2="0" style="animation-delay: 1800ms;"/>
+            <line class="amb-line" x1="0"    y1="420"  x2="0" y2="0" style="animation-delay: 2100ms;"/>
+            <line class="amb-line" x1="-400" y1="-420" x2="0" y2="0" style="animation-delay: 400ms;"/>
+            <line class="amb-line" x1="400"  y1="-420" x2="0" y2="0" style="animation-delay: 800ms;"/>
+            <line class="amb-line" x1="-400" y1="420"  x2="0" y2="0" style="animation-delay: 1400ms;"/>
+            <line class="amb-line" x1="400"  y1="420"  x2="0" y2="0" style="animation-delay: 2000ms;"/>
+            <circle class="amb-focal" cx="0" cy="0" r="6"/>
+          </svg>
+        </div>
+        <div class="divider-label anim-fade-only" style="--d:0ms">Akt III</div>
+        <div class="display display-m anim-fade" style="--d:200ms; text-align:center;">
+          Der Beweis.
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — BA SETUP
+           ============================================================ -->
+      <section id="ba-setup" data-screen-label="24 BA Setup">
+        <div class="kicker anim-fade-only" style="--d:0ms">Bachelorarbeit · Deutsche Telekom Technik</div>
+        <h2 class="anim-fade" style="--d:120ms; margin-top: 8px; line-height: 1.05;">A/B<br><span style="color: var(--fg-muted); font-weight: 400; font-size: 0.55em; letter-spacing: 0;">Gleicher Agent. Zwei Datenquellen.</span></h2>
+
+        <div class="grow" style="display:flex; flex-direction: column; justify-content: center;">
+<pre style="margin: 0; width: 100%;"><code style="font-size: 24px; line-height: 1.8;">
+<span class="anim-fade" style="--d:360ms"><span class="faint">Migration:</span>  <img src="img/logstash-logo.png" alt="" style="height: 40px; vertical-align: middle; margin: 0 8px 0 0;">Logstash / Ruby   →   <img src="img/fluentbit-logo.png" alt="" style="height: 40px; vertical-align: middle; margin: 0 8px 0 0;">FluentBit / Lua</span>
+<span class="anim-fade" style="--d:520ms"><span class="faint">Scope:    </span>  3 Filter einer E-Commerce Order Pipeline</span>
+<span class="anim-fade" style="--d:680ms"><span class="faint">Agent:    </span>  Claude Code</span>
+<span class="anim-fade" style="--d:840ms"><span class="faint">Prompt:   </span>  „Migriere die Ruby-Filter nach FluentBit Lua."</span>
+
+<span class="anim-fade" style="--d:1060ms"><span class="mag">Bedingung A:</span>  nur Source-Code</span>
+<span class="anim-fade" style="--d:1180ms"><span class="mag">Bedingung B:</span>  + 150 Zeilen Plattform-Wissen als Skill</span>
+</code></pre>
+          <p class="mono muted anim-fade-only" style="--d:1320ms; font-size: 16px; margin-top: 24px; letter-spacing: 0.04em;">
+            Log-Processing-Systeme; für die die's nicht kennen.
+          </p>
+        </div>
+        <aside class="notes">
+          Meine Bachelorarbeit untersucht genau das. Ich hab die gleiche Migration zweimal laufen lassen. Gleicher Agent — Claude Code. Gleicher Prompt. Gleiche drei Logstash Ruby-Filter aus einer E-Commerce Order-Pipeline bei Deutsche Telekom Technik.
+          Einmal nur mit dem Source-Code. Einmal mit einem zusätzlichen Skill-File, das FluentBit-Plattformwissen enthält — 150 Zeilen.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — BA SCOREBOARD (split from setup)
+           ============================================================ -->
+      <section id="ba-scoreboard" data-screen-label="25 BA Scoreboard">
+        <div class="kicker anim-fade-only" style="--d:0ms">Ergebnis</div>
+        <h2 class="anim-fade" style="--d:120ms; margin-top: 8px;">Das Modell löst Sprache<br>Nur Context löst <em>Plattform</em></h2>
+
+        <div class="grow" style="display:flex; align-items:center;">
+          <div class="scoreboard anim-fade" style="--d:400ms; width: 100%;">
+            <div class="head"></div>
+            <div class="head t-center">Ohne Context</div>
+            <div class="head t-center">Mit Context</div>
+            <div class="head"></div>
+
+            <div class="row-head">Ruby → Lua Syntax</div>
+            <div class="t-center cell-pos">11 / 13 ✓</div>
+            <div class="t-center cell-pos">11 / 13 ✓</div>
+            <div class="cell-note">← Model löst das</div>
+
+            <div class="row-head">FluentBit Sandbox</div>
+            <div class="t-center cell-neg">0 / 4 ✗</div>
+            <div class="t-center cell-pos">4 / 4 ✓</div>
+            <div class="cell-note">← Nur Context löst das</div>
+          </div>
+        </div>
+
+        <div class="anim-fade-only" style="--d:1100ms; margin-top: 12px;">
+          <p class="muted mono" style="font-size: 24px; text-align: center;">
+            Beide compilieren. Beide produzieren Lua.
+            <span class="mag">Nur eines läuft in FluentBit.</span>
+          </p>
+        </div>
+        <aside class="notes">
+          Beide Durchläufe: Code compiliert. Lua-Syntax korrekt. Elf von dreizehn subtilen Ruby-zu-Lua-Fallen — Claude löst die allein.
+          Aber vier FluentBit-spezifische Regeln: null von vier im minimalen Lauf, vier von vier im Kontext-Lauf. Und die erste Regel steht in Zeile 1.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — BA CJSON
+           ============================================================ -->
+      <section id="ba-cjson" data-screen-label="26 Zeile 1 entscheidet">
+        <h2 class="anim-fade" style="--d:120ms; margin-top: 8px;">Zeile 1 entscheidet</h2>
+
+        <div class="grow" style="display:flex; flex-direction: column; justify-content: center; gap: 28px;">
+          <div class="card card-tight anim-fade" style="--d:400ms; max-width: 1100px;">
+<pre style="margin: 0;"><code style="font-size: 28px; color: var(--neg);">local cjson = require("cjson")</code></pre>
+          </div>
+
+          <div class="anim-fade" style="--d:900ms">
+            <pre style="margin: 0;"><code style="font-size: 22px;"><span class="faint">-- [error] [lua] module 'cjson' not found</span>
+<span class="neg">→ Filter lädt nicht.</span></code></pre>
+          </div>
+
+          <div class="anim-fade-only" style="--d:1400ms">
+            <p class="muted mono" style="font-size: 22px; line-height: 1.55;">
+              FluentBits Lua-Sandbox kennt kein <span class="mag">cjson</span>.<br>
+              In normalem Lua: Standard-Library. Hier: nicht existent.
+            </p>
+          </div>
+        </div>
+        <aside class="notes">
+          Das hier ist Zeile 1 in allen drei minimalen Filtern. require('cjson'). In der normalen Lua-Welt ist cjson die Standard-Library für JSON. Fast jedes Lua-Projekt nutzt es. Claude sieht Lua, denkt "brauche JSON-Parser", schreibt require('cjson'). Logisch — in normalem Lua.
+          Aber FluentBits Lua ist nicht normales Lua. FluentBit hat eine eigene Sandbox — ohne externe C-Module. cjson existiert dort nicht. Filter lädt nicht.
+          Aber das ist nicht mal der schlimmste Fehler.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — BA INIT
+           ============================================================ -->
+      <section id="ba-init" data-screen-label="27 Der Fehler der nicht auffaellt">
+        <div class="kicker anim-fade-only" style="--d:0ms">Der Fehler der nicht auffällt</div>
+        <h2 class="anim-fade" style="--d:120ms; margin-top: 8px;"><code>function init(config)</code></h2>
+
+        <div class="grow" style="display:flex; align-items:center;">
+          <div class="card anim-fade" style="--d:400ms; max-width: 1100px;">
+<pre style="margin: 0;"><code style="font-size: 24px;"><span class="neg">function init(config)</span>
+  local f = io.open("catalog.json")
+  if f then
+    product_catalog =
+      cjson.decode(f:read("*a"))
+  end
+end
+
+<span class="faint">-- FluentBit ruft init() <span class="neg">NIE</span> auf.</span>
+<span class="faint">-- product_catalog bleibt {}</span></code></pre>
+          </div>
+        </div>
+
+        <div class="anim-fade-only" style="--d:1000ms; margin-top: 16px;">
+          <p class="muted mono" style="font-size: 22px;">
+            Code compiliert. <span class="pos">luac -p</span> besteht. Kein Error-Log. Kein Warning.
+          </p>
+        </div>
+        <aside class="notes">
+          Das hier ist der richtig böse Fehler. Logstash Ruby-Filter haben einen register(params) Callback — in Lua natürlich übersetzt zu init(config). Sieht vernünftig aus.
+          Problem: FluentBit hat diesen Callback nicht. FluentBit ruft ausschließlich cb_filter pro Event auf. Die init()-Funktion existiert im Code — wird aber niemals aufgerufen.
+          product_catalog bleibt ein leeres Table. Jedes Event geht durch den Filter und kriegt Default-Werte. Code compiliert. Kein Error-Log. Kein Warning.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — MONEY SHOT
+           ============================================================ -->
+      <section id="alles-falsch" data-screen-label="28 Alles falsch" class="section-center">
+        <div class="display anim-fade" style="--d:0ms; font-size: 120px; line-height: 1.15; text-align:center;">
+          <em>Alle Felder befüllt.</em>
+        </div>
+        <div class="display anim-fade" style="--d:700ms; font-size: 120px; line-height: 1.15; text-align:center; margin-top: 28px;">
+          <em class="mag">Alles Default.</em>
+        </div>
+
+        <div class="anim-fade-only" style="--d:1800ms; margin-top: 96px;">
+          <pre style="margin: 0;"><code style="font-size: 32px; line-height: 1.8; color: var(--fg-dim); text-align:center;">
+Kategorie:  "uncategorized"
+Marke:      "unknown"
+Zone:       "DOMESTIC"
+</code></pre>
+        </div>
+
+        <aside class="notes">
+          [HUMOR MOMENT #4 — THE money shot. Flat delivery. Pause DAVOR. Pause DANACH. Nicht weiterreden. Kein Lächeln. Der Satz muss sitzen.]
+          "Alle Felder befüllt. Alles falsch."
+          Kein Crash. Kein Error-Log. Alle Felder befüllt. Der Output sieht gut aus. Er ist nur systematisch falsch.
+          Das ist exakt was Mario "Boooos" nennt — compounding errors mit delayed pain. Der Agent fühlt den Pain nicht. Du fühlst ihn. Oft Tage später, in Produktion.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — COMPOUNDING ERRORS (joke chart, Pupa)
+           ============================================================ -->
+      <section id="compound-errors" data-screen-label="29 Kleine Fehler kompoundieren">
+        <div class="kicker anim-fade-only" style="--d:0ms">Ein Bug. Unsichtbar. Mal 10 Agenten. Mal 10 Tage.</div>
+        <h2 class="anim-fade" style="--d:120ms; margin-top: 8px; line-height: 1.05;">
+          Kleine Fehler <em>kompoundieren</em>
+        </h2>
+
+        <div class="grow" style="display:flex; align-items:center; justify-content:center; margin-top: 8px;">
+          <figure class="cmp-chart" style="width: 100%; max-width: 1520px; margin: 0; position: relative;">
+            <svg viewBox="0 0 1520 620" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Joke chart: errors compound with vs without context" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <clipPath id="cmp-clip">
+                  <rect x="140" y="20" width="1340" height="510"></rect>
+                </clipPath>
+              </defs>
+
+              <!-- Horizontal gridlines (no numeric labels — joke chart) -->
+              <g class="ctx-grid anim-fade-only" style="--d:300ms">
+                <line x1="140" x2="1480" y1="530" y2="530"></line>
+                <line x1="140" x2="1480" y1="403" y2="403"></line>
+                <line x1="140" x2="1480" y1="276" y2="276"></line>
+                <line x1="140" x2="1480" y1="149" y2="149"></line>
+                <line x1="140" x2="1480" y1="22"  y2="22" class="ctx-grid-top"></line>
+              </g>
+
+              <!-- Y axis qualitative labels -->
+              <g class="ctx-axis-label cmp-y anim-fade-only" style="--d:300ms">
+                <text x="124" y="538" text-anchor="end" class="cmp-y-keine">keine</text>
+                <text x="124" y="70"  text-anchor="end" class="cmp-y-keine">viel</text>
+              </g>
+
+              <!-- X axis: Tag 1 → Tag 10 -->
+              <g class="ctx-axis-label anim-fade-only" style="--d:300ms">
+                <text x="140"  y="568" text-anchor="start" class="cmp-x-end">Tag 1</text>
+                <text x="1480" y="568" text-anchor="end"   class="cmp-x-end">Tag 10</text>
+              </g>
+              <text class="ctx-axis-title cmp-axis-title anim-fade-only" style="--d:300ms" x="810" y="608" text-anchor="middle">Zeit</text>
+              <text class="ctx-axis-title cmp-axis-title anim-fade-only" style="--d:300ms" x="48"  y="280" text-anchor="middle" transform="rotate(-90 48 280)">Boooos</text>
+
+              <g clip-path="url(#cmp-clip)">
+                <!-- MIT CONTEXT — slight gentle rise (nicht perfekt, aber kontrolliert) -->
+                <path class="cmp-line cmp-good"
+                      d="M 140 525 C 600 518, 1000 500, 1480 470"
+                      style="--d: 700ms; --len: 1400px;"/>
+
+                <!-- OHNE CONTEXT — exponential hockey stick to the top-right -->
+                <path class="cmp-line cmp-bad"
+                      d="M 140 526 C 620 524, 900 500, 1080 380 S 1340 80, 1450 30"
+                      style="--d: 1100ms; --len: 1900px;"/>
+              </g>
+
+              <!-- Labels on the curves -->
+              <g class="cmp-labels">
+                <g class="cmp-label cmp-label-bad" style="--d: 2500ms;">
+                  <text x="860" y="298" text-anchor="start" class="cmp-label-t">OHNE CONTEXT</text>
+                  <text x="860" y="332" text-anchor="start" class="cmp-label-s">compounding · delayed pain</text>
+                </g>
+                <g class="cmp-label cmp-label-good" style="--d: 2300ms;">
+                  <text x="1296" y="454" text-anchor="end" class="cmp-label-t">MIT CONTEXT</text>
+                  <text x="1296" y="486" text-anchor="end" class="cmp-label-s">flacher · kontrollierbar</text>
+                </g>
+              </g>
+            </svg>
+
+            <!-- Pupa character omitted from public repo (copyright — Solar Opposites / 20th Television). Visible in live conference presentation under fair-use commentary. -->
+
+            <figcaption class="cmp-caption anim-fade-only" style="--d:3100ms">
+              <span>Achsen bewusst ohne Zahlen. Kurven bewusst dramatisch.</span>
+              <span class="faint">„Boooos" © M. Zechner · Pi Talk 2025</span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <aside class="notes">
+          Und jetzt stellt euch vor das passiert nicht einmal — das passiert jeden Tag. Bei jedem Agent. Bei jeder Session.
+          Kleiner Disclaimer: die Zahlen hier sind keine — die Achsen sagen „keine Boooos" bis „drei Feuer-Emojis". Das ist mit voller Absicht. Was stimmt ist die Form: ohne Context kompoundieren die kleinen Fehler, weil niemand sie einfängt. Der Agent fühlt den Pain nicht. Du fühlst ihn. Oft Tage später, in Produktion.
+          Der Begriff „Boooos" ist übrigens von Mario Zechner — kleine Fehler die sich unbemerkt summieren. Credits wo Credits fällig sind.
+          Pointe: Context Engineering ist nicht „nice to have" — es ist die Schraube die diese Kurve flach hält.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — GLEICHER AGENT ANDERER CONTEXT (new beat)
+           ============================================================ -->
+      <section id="context-divider" data-screen-label="30 Gleicher Agent" class="section-center">
+        <div class="mono-kicker anim-fade-only" style="--d:0ms; font-size: 28px;">Gleicher Agent. Gleicher Prompt.</div>
+        <div class="display display-l anim-fade" style="--d:300ms; text-align:center; margin-top: 28px;">
+          Anderer <em>Context.</em>
+        </div>
+        <div class="mono-kicker anim-fade-only" style="--d:1100ms; margin-top: 40px; font-size: 28px;">Anderes Ergebnis.</div>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — BA FIX (typing effect on code)
+           ============================================================ -->
+      <section id="ba-fix" data-screen-label="31 Der Fix">
+        <h2 class="anim-fade" style="--d:120ms; margin-top: 8px;">Plattform-Wissen Context</h2>
+
+        <div class="grow" style="display:flex; align-items:center;">
+          <div class="card anim-fade" style="--d:400ms; max-width: 1100px;">
+<pre style="margin: 0;"><code style="font-size: 24px;">function cb_filter(tag, ts, record)
+  <span class="pos">ensure_loaded()</span>
+  -- ...
+end
+
+local function ensure_loaded()
+  if loaded then return end
+  local f = io.open("catalog.json")
+  <span class="pos">if not f then error("catalog missing") end</span>
+  -- lazy load beim ersten Event
+  loaded = true
+end</code></pre>
+          </div>
+        </div>
+
+        <div class="anim-fade-only" style="--d:1100ms; margin-top: 20px;">
+          <p class="serif" style="font-size: 38px; font-style: italic; line-height: 1.25;">
+            Der Agent hat die <em>Sprache</em> verstanden.<br>
+            Er hat die <em class="mag">Plattform</em> nicht verstanden.
+          </p>
+        </div>
+
+        <aside class="notes">
+          Gleicher Agent, gleiche Aufgabe, 150 Zeilen Plattform-Wissen als Skill im Context.
+          ensure_loaded() Pattern — lazy initialization beim ersten Event. Plus error()-Check wenn die Datei fehlt. Laut statt leise. Das richtige FluentBit-Pattern.
+          Der Agent hat die SPRACHE verstanden. Er hat die PLATTFORM nicht verstanden. Und genau diesen Unterschied macht Context Engineering. Nicht ein besseres Modell. Nicht ein längerer Prompt. Der richtige Context zur richtigen Zeit.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — COMMUNITY VALIDATION (Armin Ronacher quote)
+           ============================================================ -->
+      <section id="issue-card" data-screen-label="32 Community Validation" class="section-center">
+        <div class="grow" style="display:flex; flex-direction: column; align-items:center; justify-content:center; gap: 36px;">
+          <blockquote class="anim-fade" style="--d:400ms; margin: 0; padding: 0; max-width: 1200px; text-align: center; font-family: var(--font-serif, Georgia, serif); font-style: italic; font-size: 44px; line-height: 1.3; color: var(--fg);">
+            „I fully replaced all my CLIs or MCPs for browser automation with a skill that just uses CDP. Not because the alternatives don't work, or are bad, but because this is just easy and natural."
+          </blockquote>
+
+          <div class="mono anim-fade-only" style="--d:800ms; font-size: 22px; letter-spacing: 0.04em; color: var(--fg-muted); text-align: center;">
+            — Armin Ronacher · Flask creator · pi user
+          </div>
+
+          <div class="mono anim-fade-only" style="--d:1300ms; font-size: 14px; letter-spacing: 0.08em; color: var(--fg-dim); text-align: center;">
+            lucumr.pocoo.org · 2026
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — PROGRESSIVE DISCLOSURE PYRAMID
+           ============================================================ -->
+      <section id="progressive-disclosure" data-screen-label="33 Progressive Disclosure">
+        <div class="kicker anim-fade-only" style="--d:0ms">Wie macht man das praktisch?</div>
+        <h2 class="anim-fade" style="--d:120ms; margin-top: 8px;">Progressive <em>Disclosure</em></h2>
+
+        <div class="grow" style="display:flex; align-items:center;">
+          <div class="pyramid" style="width: 100%;">
+            <div class="tier" style="--w: 40%; --d: 400ms;">
+              <div class="t-label">Level 1 · immer geladen</div>
+              <div class="t-head">Metadata <span class="dim" style="font-size:20px;">~50 Tokens</span></div>
+              <div class="t-sub">Agent <em>weiß</em> was existiert.</div>
+            </div>
+            <div class="tier" style="--w: 60%; --d: 800ms;">
+              <div class="t-label">Level 2 · on relevance</div>
+              <div class="t-head">SKILL.md <span class="dim" style="font-size:20px;">~500–2000 Tokens</span></div>
+              <div class="t-sub">Agent <em>versteht</em> wie es funktioniert.</div>
+            </div>
+            <div class="tier" style="--w: 80%; --d: 1200ms;">
+              <div class="t-label">Level 3 · on demand</div>
+              <div class="t-head">Linked Files</div>
+              <div class="t-sub">Agent <em>hat</em> was er braucht.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="anim-fade-only" style="--d:1700ms; margin-top: 16px;">
+          <p class="mono t-center" style="font-size: 22px;">
+            MCP Server: <span class="neg">~10.000 Tokens</span>
+            <span class="faint">  ·  </span>
+            Agent Skill: <span class="mag">~200 Tokens</span>
+            <span class="faint"> — gleiche Fähigkeit.</span>
+          </p>
+        </div>
+
+        <aside class="notes">
+          Drei Levels. Level 1: der Agent weiß was existiert. Nur Name und Beschreibung — 50 Tokens. Wie ein Inhaltsverzeichnis. Level 2: wenn relevant, lädt er die volle Anleitung. 500 bis 2000 Tokens. Level 3: Referenzmaterial und Templates erst bei konkretem Bedarf.
+          Ein MCP Server kostet 10.000 Tokens — immer, bei jedem Start. Ein Agent Skill mit Progressive Disclosure: 200 Tokens. Gleiche Fähigkeit.
+          Stellt euch vor ihr habt einen neuen Mitarbeiter. Am ersten Tag: kriegt er 500 Seiten Confluence? Nein. Er kriegt ein Employee Handbook — Inhaltsverzeichnis, Ansprechpartner, und die Anweisung: schlag nach wenn du es brauchst. Agent Skills funktionieren genauso.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — MCPT VENN (new visual per user request)
+           ============================================================ -->
+      <section id="mcpt" data-screen-label="34 MCPT Framework">
+        <h2 class="anim-fade" style="--d:120ms; margin-top: 8px; text-align:center;">
+          <em>Model. Context. Prompt. Tool</em>
+        </h2>
+
+        <div class="grow" style="display:flex; align-items:center; justify-content:center;">
+          <div class="venn">
+            <svg viewBox="0 0 820 520" preserveAspectRatio="xMidYMid meet">
+              <!-- 4 circles overlapping in the center -->
+              <circle class="v-circle" cx="320" cy="200" r="170" style="--d: 400ms;" />
+              <circle class="v-circle" cx="500" cy="200" r="170" style="--d: 650ms;" />
+              <circle class="v-circle" cx="320" cy="320" r="170" style="--d: 900ms;" />
+              <circle class="v-circle" cx="500" cy="320" r="170" style="--d: 1150ms;" />
+
+              <!-- Outer labels -->
+              <text class="v-label" x="180" y="100"  text-anchor="middle" style="--d: 1500ms;">MODEL</text>
+              <text class="v-label" x="640" y="100"  text-anchor="middle" style="--d: 1600ms;">CONTEXT</text>
+              <text class="v-label" x="180" y="440"  text-anchor="middle" style="--d: 1700ms;">PROMPT</text>
+              <text class="v-label" x="640" y="440"  text-anchor="middle" style="--d: 1800ms;">TOOL</text>
+
+              <!-- Core — where it all meets -->
+              <text class="v-core"  x="410" y="268" text-anchor="middle" style="--d: 2100ms;">MCPT</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="anim-fade-only" style="--d:2600ms; margin-top: 8px;">
+          <p class="mono muted t-center" style="font-size: 20px; line-height: 1.6;">
+            Die meisten optimieren an <span class="faint">Model</span>.<br>
+            Fast niemand macht <span class="mag">Context Engineering</span> — und das ist der Hebel der am meisten bewegt.
+          </p>
+        </div>
+
+        <aside class="notes">
+          Context. Model. Prompt. Tools. Vier Hebel. Alles was ich euch gerade gezeigt habe, dreht sich um diese vier.
+          Meine ganze Reise war das Entdecken dieser vier Hebel. Erst Model optimiert — größer, neuer, teurer. Dann Context — erst manuell, dann automatisiert. Dann Tools — erst zu viele, dann zu wenige, dann dynamisch. Dann Prompt — minimal, erweiterbar.
+          Die meisten Teams optimieren an Model. Fast niemand macht Context Engineering. Und das ist der Hebel der am meisten bewegt.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — COMMUNITY FRAME (Weights / Context / Harness)
+           ============================================================ -->
+      <section id="community-frame" data-screen-label="35 Community Frame">
+        <div class="grow" style="display:grid; grid-template-columns: minmax(340px, 0.9fr) 1.6fr; gap: 60px; align-items: center; height: 100%; padding: 40px 20px;">
+
+          <!-- Left: title + citation -->
+          <div style="display:flex; flex-direction: column; justify-content: center; gap: 28px;">
+            <h2 class="anim-fade" style="--d:200ms; text-align:left; margin: 0;">
+              Weights <em class="mag">Context</em> Harness
+            </h2>
+            <div class="mono anim-fade-only" style="--d:900ms; font-size: 18px; color: var(--fg-dim, #6A6570); letter-spacing: 0.04em; line-height: 1.6;">
+              arXiv:2604.08224 · Externalization in LLM Agents (Apr 2026)
+            </div>
+          </div>
+
+          <!-- Right: image, bigger -->
+          <div style="display:flex; align-items: center; justify-content: center; min-width: 0;">
+            <img class="anim-fade" style="--d:500ms; width: 100%; max-width: 100%; max-height: 88vh; height: auto; object-fit: contain; display: block;" src="img/community-frame-figure.png" alt="Community theme evolution across three capability layers: Weights, Context, Harness — center of gravity shifts outward from 2022 to 2026." />
+          </div>
+        </div>
+
+        <aside class="notes">
+          Bevor ich zum Schluss komme — ich bin nicht alleine mit dieser Perspektive. Eine Survey von Anfang April nennt genau diese drei Ebenen: Weights, Context, Harness. Die Community hat sich seit 2022 nach außen ausgedehnt — von Modell-Gewichten über Context-Techniken hin zu Harness-Infrastruktur. Skills, MCP, Multi-Agent — alles Harness. Mein MCPT ist die Engineering-Sicht auf genau dieses Phänomen.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SLIDE — STEERING (new beat — single word)
+           ============================================================ -->
+      <section id="steering" data-screen-label="36 Steering">
+        <div style="display:flex; flex-direction:column; align-items:center; justify-content:flex-start; height:100%; padding-top: 80px;">
+          <div class="mono-kicker anim-fade-only" style="--d:0ms; text-align:center;">Was übrig bleibt, wenn man alles zusammenzieht:</div>
+          <div class="display display-l anim-fade" style="--d:400ms; margin-top: 24px; text-align:center;">
+            <em>Steering.</em>
+          </div>
+          <div class="mono muted anim-fade-only" style="--d:1300ms; margin-top: 32px; font-size: 22px; max-width: 900px; text-align:center; line-height: 1.55;">
+            Nicht das Modell wählt deinen Context.<br>
+            Du wählst ihn.
+          </div>
+
+          <!-- QR — fades in as reveal.js fragment at index 2, centered below the statement -->
+          <div class="fragment fade-in" data-fragment-index="2"
+               style="margin-top: 56px; display:flex; flex-direction:column; align-items:center; gap: 14px;">
+            <div style="padding: 16px; border: 1px solid var(--rule); background: var(--bg-elev);">
+              <img src="img/qr-repo.png"
+                   alt="GitHub Repo · context-engineering"
+                   width="360" height="360"
+                   style="display:block;">
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 14px; letter-spacing: 0.08em; color: var(--fg-dim);">
+              github.com/larsboes/context-engineering
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+
+      <!-- ============================================================
+           SLIDE — MANIFESTO
+           ============================================================ -->
+      <section id="manifesto" data-screen-label="37 Manifesto" class="section-center">
+        <div class="display anim-fade" style="--d:100ms; font-size: 84px; text-align:center; line-height: 1.15;">
+          Minds Mastering Machines
+        </div>
+        <div class="mono anim-fade-only" style="--d:700ms; font-size: 32px; text-align:center; margin: 28px 0; color: var(--ink-3); letter-spacing: 0.08em;">
+          statt
+        </div>
+        <div class="display mag anim-fade" style="--d:1200ms; font-size: 60px; text-align:center; line-height: 1.15;">
+          Minds <em>Waiting</em> for Machines.
+        </div>
+
+        <div class="mono-kicker anim-fade-only" style="--d:2200ms; position: absolute; left: 0; right: 0; bottom: 48px; text-align:center; font-size: 16px; letter-spacing: 0.08em;">
+          Lars Boes · @larsboes · Deutsche Telekom Technik
+        </div>
+        <aside class="notes">
+          [Pause.]
+          Slides und alle Quellen teile ich nach dem Talk. GitLab Repo ist im QR Code auf der vorigen Slide.
+          Ich bin Lars Boes, Software Engineer bei Deutsche Telekom Technik. Sprecht mich gerne an, ich bin den Rest der Konferenz hier.
+          (Falls Zeit erlaubt): Fragen?
+        </aside>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ============================================================
+       Chrome (persistent footer + pager, Mario-style)
+       ============================================================ -->
+  <div class="chrome-l"></div>
+  <div class="chrome-r" id="chrome-pager">01 / 31</div>
+
+  <!-- ============================================================
+       Tweaks panel
+       ============================================================ -->
+  <div id="tweaks-panel" aria-hidden="true">
+    <h4>Tweaks</h4>
+    <div class="row" data-group="accent">
+      <label>Accent</label>
+      <div class="opts">
+        <button data-val="magenta" class="active">magenta</button>
+        <button data-val="amber">amber</button>
+        <button data-val="cyan">cyan</button>
+        <button data-val="none">none</button>
+      </div>
+    </div>
+    <div class="row" data-group="bg">
+      <label>Background</label>
+      <div class="opts">
+        <button data-val="flat">flat</button>
+        <button data-val="grad" class="active">gradient</button>
+        <button data-val="grain">grain</button>
+      </div>
+    </div>
+    <div class="row" data-group="anim">
+      <label>Animation</label>
+      <div class="opts">
+        <button data-val="off">off</button>
+        <button data-val="subtle">subtle</button>
+        <button data-val="full" class="active">full</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" id="speaker-notes">
+[
+  "Kennt ihr das? Neue Session. Erste 10 Minuten — der Agent ist schärfer als ihr selbst. Minute 20 — er wiederholt sich. Minute 30 — confident Unsinn. Minute 40 — ihr fangt von vorne an. Zwei Jahre um zu verstehen: die Antwort ist nicht 'besseres Modell.'",
+  "Akt I — Wie ich darauf gekommen bin.",
+  "Kurz zu mir: Lars, Deutsche Telekom Technik, dualer Student. BA zu AI Agents in der Praxis. Wie die meisten: Modell-Upgrade-Pfad. Jedes Upgrade fühlte sich an wie ein Produktivitätssprung — bis es aufgehört hat.",
+  "MCP Server kamen raus und ich war begeistert. Notion, Obsidian, context7, Docling. Mein Agent hatte Zugang zu allem. Das musste doch besser sein. [Flat — HUMOR #2]",
+  "Kurzer Refresher, damit wir die gleiche Sprache sprechen: Sprachmodelle sagen das nächste Token voraus. Immer. Sonst nichts. 'Dear Sarah, I'm writing to apologize' — das Modell hätte hier auch 'invite' oder 'tell' wählen können. Jedes Token ist eine Verzweigung. Jede Wahl bestimmt, welche Pfade danach wahrscheinlich werden. Das heißt: was vorher im Kontext steht, legt fest wohin das Modell überhaupt denken kann. Ohne relevanten Kontext keine relevante Vorhersage.",
+  "Und dieser Kontext wächst. Turn 1 — System Prompt, eure Frage, vielleicht Tool-Definitionen. Turn 3 — Assistant-Antworten, Tool-Calls, Tool-Results kommen dazu. Turn 10 — der Stapel ist tief. Jede Turn schiebt neue Tokens rein, keine gehen raus. Das ist wichtig: Context ist kumulativ. Und jedes Token in diesem Stapel beeinflusst die nächste Vorhersage. Das ist der Hebel über den wir reden.",
+  "Dann hat Claude Code /context eingeführt. Und ich hab zum ersten Mal gesehen was da wirklich passiert. Über ein Drittel meines Context Windows für Tool-Definitionen die der Agent nicht braucht.",
+  "Chroma Research hat das quantifiziert: Claude Sonnet fällt von 89% auf 38% Accuracy mit mehr Context. Nicht O(1) — mindestens O(n). Jeder irrelevante Token kostet.",
+  "Das hat einen Namen: Context Rot. Und ich bin überzeugt — das ist das zentrale Problem das die meisten noch nicht auf dem Schirm haben.",
+  "Mein erster Reflex: alles raus. Dann Dynamic MCP Loading — erst Hidden Flag, jetzt Standard. Und für die meisten Cases: Agent Skills. Von 10.000 auf unter 200 Tokens.",
+  "Das Grundproblem blieb. Mit jedem Update ändert sich das Verhalten. Der System Prompt ändert sich. Informationen werden injiziert. Du siehst nicht mehr wie dein Context manipuliert wird.",
+  "Akt II — Love Letter to Pi.",
+  "Terminus auf TerminalBench: nur Keystrokes und tmux-Output. Kein File Tool, keine Sub-Agents, kein Plan-Mode. Schlägt Systeme mit 10x mehr Tooling. Was sagt das über all die Features?",
+  "Mario sagt: we're in the mess around and find out phase. Niemand weiß wie das perfekte System aussieht. Deshalb brauchen wir malleable Agents.",
+  "Pi: 4 Tools. Weniger als 1000 Tokens System Prompt. Schlägt auf TerminalBench Systeme mit 10x mehr Tooling. Weil exakt kontrolliert wird was in den Context kommt.",
+  "read, write, edit, bash. Das ist alles. Der Agent startet minimal — und sucht sich seinen Context selbst.",
+  "Mein Context bleibt mein Context — Modell kann sich ändern, Steering bleibt. Extensions mit Hot Reload. Session Branching statt Sub-Agents. [HUMOR #6: mehr Agents die den Überblick verlieren.] It's not any coding agent — it's mine.",
+  "Pi ist der agentic Core von OpenClaw — kein Nischenthema mehr. Credits ans Claude Code Team: MCP, Agent Skills, Dynamic Loading, Memory. Tools die für Millionen funktionieren müssen. Verschiedene Needs, verschiedene Tools.",
+  "Akt III — Der Beweis.",
+  "Meine BA: Ich hab's zweimal laufen lassen. Gleicher Agent, gleicher Prompt. Einmal nur mit Source-Code. Einmal mit 150 Zeilen Plattform-Wissen als Skill.",
+  "Ruby → Lua Syntax: 11/13 in beiden Läufen — Model löst das. FluentBit Sandbox: 0/4 ohne Context, 4/4 mit Context. Beide compilieren. Beide produzieren Lua. Nur eines läuft in FluentBit.",
+  "Zeile 1 in allen drei minimalen Filtern: require('cjson'). Logisch — in normalem Lua. FluentBits Lua-Sandbox hat kein cjson. Filter lädt nicht. Aber das ist nicht mal der schlimmste Fehler.",
+  "Der richtig böse Fehler: init(config). Sieht vernünftig aus. FluentBit ruft init() niemals auf. product_catalog bleibt leer. Code compiliert. luac -p besteht. Kein Error-Log. Kein Warning.",
+  "[HUMOR #4 — THE money shot. Flat. Pause davor. Pause danach.] Alle Felder befüllt. Alles falsch. Kein Crash. Output sieht gut aus. Ist nur systematisch falsch. Das ist compounding errors mit delayed pain.",
+  "Und jetzt stellt euch vor das passiert nicht einmal — das passiert jeden Tag. Kleiner Disclaimer: die Zahlen hier sind keine — die Achse geht von „keine Boooos" bis „drei Feuer-Emojis". Mit Absicht. Was stimmt ist die Form: ohne Context kompoundieren die kleinen Fehler, weil niemand sie einfängt. Der Agent fühlt den Pain nicht. Du fühlst ihn. Der Begriff „Boooos" ist von Mario Zechner. Credits wo Credits fällig sind.",
+  "Gleicher Agent. Gleicher Prompt. Anderer Context. Anderes Ergebnis.",
+  "Mit 150 Zeilen Plattform-Wissen als Skill: ensure_loaded() Pattern, lazy initialization, error() wenn Datei fehlt. Der Agent hat die Sprache verstanden. Er hat die Plattform nicht verstanden. Das macht Context Engineering.",
+  "Nicht nur ich. Armin Ronacher — der Flask-Erfinder — nutzt Pi. Er hat CLIs und MCPs für Browser-Automation komplett durch einen Skill mit Chrome DevTools Protocol ersetzt. Nicht weil die Alternativen nicht funktionieren — sondern weil es so einfacher und natürlicher ist. Genau das Muster: minimal, erweiterbar, explizites Steering statt Tool-Sammlung.",
+  "Progressive Disclosure — drei Levels. Level 1: der Agent WEISS was existiert (50 Tokens). Level 2: er VERSTEHT wie es funktioniert (500-2000 Tokens). Level 3: er HAT was er braucht. MCP Server: 10.000 Tokens. Agent Skill: 200. Gleiche Fähigkeit.",
+  "Alles was ich euch gezeigt habe — vier Dinge. Context, Model, Prompt, Tools/Skills. Meine ganze Reise war das Entdecken dieser vier Hebel. Die meisten optimieren an Model. Fast niemand macht Context Engineering. Und das ist der Hebel der am meisten bewegt.",
+  "Steering. Nicht das Modell wählt deinen Context. Du wählst ihn.",
+  "[Pause.] Wir sind auf einer Konferenz die Minds Mastering Machines heißt. Nicht Minds Waiting for Machines. Slides und Quellen teile ich nach dem Talk. Sprecht mich an, ich bin den Rest der Konferenz hier."
+]
+</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+
+  <script>
+    // ============================================================
+    // Reveal init
+    // ============================================================
+    Reveal.initialize({
+      width: 1920,
+      height: 1080,
+      margin: 0.02,
+      hash: true,
+      slideNumber: false,
+      controls: false,
+      progress: true,
+      center: false,
+      transition: 'fade',
+      transitionSpeed: 'default',
+      backgroundTransition: 'none',
+      plugins: [RevealNotes]
+    });
+
+    // ============================================================
+    // Count-up animations for data-count nodes
+    // ============================================================
+    function animateCountUp(el) {
+      const target = parseFloat(el.dataset.count);
+      const suffix = el.dataset.suffix || '';
+      const prefix = el.dataset.prefix || '';
+      const duration = 1200 * (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--anim-unit')) || 1);
+      if (duration === 0) { el.textContent = prefix + target.toLocaleString('en-US') + suffix; return; }
+      const start = performance.now();
+      const from = 0;
+      function frame(now) {
+        const t = Math.min(1, (now - start) / duration);
+        // easeOutCubic
+        const k = 1 - Math.pow(1 - t, 3);
+        const v = from + (target - from) * k;
+        const rounded = target >= 100 ? Math.round(v) : Math.round(v * 1) / 1;
+        el.textContent = prefix + rounded.toLocaleString('en-US') + suffix;
+        if (t < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function triggerCountUps(slide) {
+      slide.querySelectorAll('[data-count]').forEach(el => {
+        // respect the element's --d delay
+        const delayStr = (el.style.getPropertyValue('--d') || '0ms').trim();
+        const delay = parseFloat(delayStr) || 0;
+        setTimeout(() => animateCountUp(el), delay);
+      });
+    }
+
+    Reveal.on('ready',  e => { triggerCountUps(e.currentSlide); triggerRotDecay(e.currentSlide); });
+    Reveal.on('slidechanged', e => { triggerCountUps(e.currentSlide); triggerRotDecay(e.currentSlide); });
+
+    // ============================================================
+    // Slide 11 — Context Rot attention-meter countdown
+    // ============================================================
+    function triggerRotDecay(slide) {
+      if (!slide || slide.id !== 'context-rot') return;
+      const numEl = slide.querySelector('.rot-meter-num');
+      if (!numEl) return;
+      // restart: clone to reset CSS animations, then run the counter
+      slide.querySelectorAll('.rot-meter-fill, .rot-o1, .rot-o1::after, .rot-on, .tok').forEach(el => {
+        el.style.animation = 'none'; void el.offsetWidth; el.style.animation = '';
+      });
+      const unit = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--anim-unit')) || 1;
+      const duration = 6500 * unit;
+      const startDelay = 700 * unit;
+      const from = 100, to = 34;
+      numEl.textContent = from;
+      setTimeout(() => {
+        const t0 = performance.now();
+        function frame(now) {
+          const t = Math.min(1, (now - t0) / duration);
+          // match CSS easing cubic-bezier(.55,.05,.3,1) ~ easeInOutCubic-ish
+          const k = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+          numEl.textContent = Math.round(from + (to - from) * k);
+          if (t < 1) requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      }, startDelay);
+    }
+
+    // ============================================================
+    // Slide counter in footer chrome
+    // ============================================================
+    function updatePager() {
+      const all = Reveal.getSlides();
+      const idx = Reveal.getIndices();
+      const flat = idx.h + (idx.v ? 0 : 0); // we have no vertical stacks
+      const cur = Reveal.getSlidePastCount() + 1;
+      const total = all.length;
+      const pad = n => String(n).padStart(2, '0');
+      document.getElementById('chrome-pager').textContent =
+        `${pad(cur)} / ${pad(total)}`;
+      // Post for speaker notes
+      if (window.parent !== window) {
+        try { window.parent.postMessage({ slideIndexChanged: cur - 1 }, '*'); } catch(e) {}
+      }
+    }
+    Reveal.on('ready', updatePager);
+    Reveal.on('slidechanged', updatePager);
+    // Belt-and-suspenders: also post on load + after tick, in case host panel
+    // missed the ready event or loads after the deck
+    window.addEventListener('load', () => setTimeout(updatePager, 100));
+    setTimeout(updatePager, 500);
+
+    // ============================================================
+    // Tweaks panel — edit-mode protocol
+    // ============================================================
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "accent": "magenta",
+      "bg": "grad",
+      "anim": "full"
+    }/*EDITMODE-END*/;
+
+    const panel = document.getElementById('tweaks-panel');
+    const root = document.documentElement;
+
+    function applyTweak(group, val) {
+      root.setAttribute('data-' + group, val);
+      panel.querySelectorAll(`.row[data-group="${group}"] button`).forEach(b => {
+        b.classList.toggle('active', b.dataset.val === val);
+      });
+    }
+
+    // Apply defaults on load (in case they've been edited on disk)
+    Object.entries(TWEAK_DEFAULTS).forEach(([k, v]) => applyTweak(k, v));
+
+    // Wire up clicks
+    panel.querySelectorAll('.row').forEach(row => {
+      const group = row.dataset.group;
+      row.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const val = btn.dataset.val;
+          applyTweak(group, val);
+          if (window.parent !== window) {
+            try {
+              window.parent.postMessage({
+                type: '__edit_mode_set_keys',
+                edits: { [group]: val }
+              }, '*');
+            } catch(e) {}
+          }
+        });
+      });
+    });
+
+    // Edit mode listener — register BEFORE announcing availability
+    window.addEventListener('message', (ev) => {
+      const d = ev.data;
+      if (!d || typeof d !== 'object') return;
+      if (d.type === '__activate_edit_mode') panel.classList.add('open');
+      if (d.type === '__deactivate_edit_mode') panel.classList.remove('open');
+    });
+    if (window.parent !== window) {
+      try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch(e) {}
+    }
+
+    // Persist current slide in localStorage so refresh doesn't lose place
+    Reveal.on('slidechanged', e => {
+      try { localStorage.setItem('m3-slide-idx', String(Reveal.getSlidePastCount())); } catch(_) {}
+    });
+    Reveal.on('ready', () => {
+      try {
+        const saved = parseInt(localStorage.getItem('m3-slide-idx') || '0', 10);
+        if (!isNaN(saved) && saved > 0 && !location.hash) Reveal.slide(saved);
+      } catch(_) {}
+    });
+  </script>
+</body>
+</html>
